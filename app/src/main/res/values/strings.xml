@@ -1,0 +1,157 @@
+<resources>
+    <string name="app_name">MFRickAndMorty</string>
+    <string name="mf_cd_rick_avatar">This is a avatar of Rick</string>
+    <string name="mf_cd_add_icon">This is a add age button</string>
+    <string name="mf_cd_quit_icon">This is a quit age button</string>
+    <string name="mf_cd_placeholder_character">This is </string>
+    <string name="mf_cd_home_bg">This is a Rick card for season</string>
+    <string name="mf_error_loading_label">An error occurred</string>
+    <!--  MFSplashScreen  -->
+    <string name="mf_splash_screen_title">MF Rick and Morty</string>
+    <string-array name="mf_splash_screen_title">
+        <item>MF</item>
+        <item>Rick</item>
+        <item>And</item>
+        <item>Morty</item>
+    </string-array>
+    <string name="mf_splash_screen_subtitle">A fan detector</string>
+    <!--  MFProfilerScreen  -->
+    <string name="mf_profiler_screen_title">First…</string>
+    <string name="mf_profiler_screen_who_are_you_label">Who are you?</string>
+    <string name="mf_profiler_screen_who_are_you_anwser_hint">Type your name</string>
+    <string name="mf_profiler_screen_age_label">And your age is?</string>
+    <string name="mf_profiler_screen_age_default_hint">12</string>
+    <string name="mf_profiler_screen_choose_character_icon_label">Choose your avatar</string>
+    <string name="mf_profiler_screen_fun_character_rick_name">Rick</string>
+    <string name="mf_profiler_screen_fun_guard_label">Fun guard</string>
+    <string name="mf_profiler_screen_cd_input_label">This is a input for %1$s</string>
+    <string name="mf_profiler_screen_name_input_label">Your name</string>
+    <string name="mf_profiler_screen_age_input_label">Your age</string>
+    <string name="mf_profiler_screen_min_age_label">You should be 14 at least</string>
+    <string name="mf_profiler_screen_so_baby_label">No way, you are a baby yet</string>
+    <string name="mf_profiler_screen_dont_exist">Really?, You don´t even exist</string>
+    <string name="mf_profiler_screen_free_time">Much free time?</string>
+    <string name="mf_profiler_screen_try_another">Try with padel pal</string>
+    <string name="mf_profiler_screen_max_age_label">OK, my respects</string>
+    <string name="mf_profiler_screen_so_old">I don´t think so, you should be dead</string>
+    <string name="mf_profiler_continue_ask_label">Continue?</string>
+    <string name="mf_profiler_screen_no_thanks">No, I just asked you for the time, doc</string>
+    <string name="mf_profiler_screen_toast_good_choice">Good choice</string>
+
+
+    <!--  MFFanInfoScreen  -->
+    <string name="mf_faninfo_screen_hi">Hey, read down</string>
+    <string name="mf_faninfo_screen_title">This is a fan detector</string>
+    <string name="mf_faninfo_screen_expl_one">You can find all you like from</string>
+    <string-array name="mf_faninfo_rickmorty_title">
+        <item>Rick &#160;</item>
+        <item>And &#160;</item>
+        <item>Morty &#160;</item>
+        <item>Series</item>
+    </string-array>
+    <string name="mf_faninfo_screen_expl_two">But! As I don´t know nothing about you, I will ask you for your fan level</string>
+    <string-array name="mf_faninfo_screen_last_expl">
+        <item>First, take a look and when you feel prepared, press on &#160;</item>
+        <item>\nJerry´s Face</item>
+    </string-array>
+    <string name="mf_faninfo_screen_expl_screen_continue_ask_label">Continue?</string>
+
+    <!--  MFTopBar  -->
+    <string name="mf_topbar_icon_search_label">Search Icon</string>
+    <string name="mf_topbar_arrow_back_label">Arrow back Icon</string>
+    <string name="mf_topbar_like_label">Like Icon</string>
+    <string name="mf_topbar_delete_label">Delete Icon</string>
+    <string name="mf_topbar_search_hint_label">Search for characters…</string>
+    <string name="mf_topbar_icon_loading_label">Loading avatar icon…</string>
+
+    <!--  MFHomeScreen  -->
+    <string name="mf_home_screen_title_locations_label">Locations</string>
+    <string name="mf_home_screen_title_seasons_label">Seasons</string>
+    <string name="mf_home_screen_likes_label">Characters you liked</string>
+    <string name="mf_home_screen_not_likes_label">Nothing for now</string>
+    <string name="mf_home_screen_test_question_jerry_label">Test?</string>
+    <string name="mf_home_screen_season_label">S</string>
+    <string name="mf_home_screen_first_episode_label">Start ep: &#160;</string>
+    <string name="mf_home_screen_release_date_label">Release date: &#160;</string>
+    <string name="mf_home_screen_connected_label">You are online</string>
+    <string name="mf_home_screen_disconnected_label">You are offline</string>
+    <string name="mf_home_screen_unknown_label">We don´t know about your connection</string>
+
+    <!--  MFLocationScreen  -->
+    <string name="mf_location_screen_unknown_label">We don´t know about your connection</string>
+    <string name="mf_location_screen_residents_number_label">Residents: %1$s</string>
+    <string name="mf_location_screen_loading_number_label">Loading…</string>
+
+    <!--  MFUserProfileScreen  -->
+    <string name="mf_user_profile_screen_title">Your profile</string>
+    <string name="mf_user_profile_screen_quiz_label">Quizzes</string>
+    <string name="mf_user_profile_screen_quiz_number_label">Quiz %1$s</string>
+    <string name="mf_user_profile_screen_quiz_cd_label">Passed %1$s, Total $2$s</string>
+    <string name="mf_user_profile_screen_likes_label">Likes</string>
+    <string name="mf_user_profile_screen_age_label">Age: %1$s</string>
+    <string name="mf_user_profile_screen_any_guard_label">Zero</string>
+    <string name="mf_user_profile_screen_any_expl_title_label">Try</string>
+    <string name="mf_user_profile_screen_any_quiz_advice_one_label">Searching for characters</string>
+    <string name="mf_user_profile_screen_any_like_advice_one_label">Checking for seasons</string>
+
+    <!--  MFSeasonScreen  -->
+    <string name="mf_season_screen_title_label">Season &#160;</string>
+    <string name="mf_season_screen_subtitle_label">Episodes &#160; %1$s</string>
+    <string name="mf_season_screen_starring_label">Starring &#160;</string>
+
+    <!--  MFCharacterScreen -->
+    <string name="mf_season_screen_appear_label">Appears in</string>
+
+    <!--  MFSearchScreen  -->
+    <string name="mf_search_screen_nothing_search_label">Nothing</string>
+    <string name="mf_search_screen_wise_search_label">Search wisely</string>
+    <string name="mf_search_screen_title_status_filter_label">Status</string>
+    <string name="mf_search_screen_alive_filter_label">Alive</string>
+    <string name="mf_search_screen_dead_filter_label">Dead</string>
+    <string name="mf_search_screen_title_gender_filter_label">Gender</string>
+    <string name="mf_search_screen_male_filter_label">Male</string>
+    <string name="mf_search_screen_female_filter_label">Female</string>
+    <string name="mf_search_screen_unknown_filter_label">Unknown</string>
+
+    <!--  MFLoader  -->
+    <string name="mf_loader_loading_seasons_label">Loading seasons…</string>
+    <string name="mf_loader_loading_characters_label">Loading characters…</string>
+    <string name="mf_loader_loading_label">Loading…</string>
+
+    <!--  MFCharacterFound  -->
+    <string name="mf_character_found_species_label">Species: &#160;</string>
+    <string name="mf_character_found_origin_label">First seen: &#160;</string>
+
+    <!--  MFQuizScreen  -->
+    <string name="mf_quiz_screen_hi">Hey, read down</string>
+    <string name="mf_quiz_screen_title">Let´s try you</string>
+    <string-array name="mf_quiz_screen_explone">
+        <item>Here i am going to test your &#160;</item>
+        <item>fanaticism</item>
+    </string-array>
+    <string-array name="mf_quiz_screen_expltwo">
+        <item>I am goint to ask you &#160;</item>
+        <item>6 questions</item>
+    </string-array>
+    <string name="mf_quiz_screen_explthr">4 correct for passing</string>
+    <string name="mf_quiz_screen_explfrh">If you pass it, you can go with Morty</string>
+    <string name="mf_quiz_screen_prepared_but">Prepared?</string>
+    <string name="mf_quiz_screen_leave_quiz_ask">Oh…</string>
+    <string name="mf_quiz_screen_leave_quiz_title">Want to leave?</string>
+    <string name="mf_quiz_screen_leave_quiz_content">You will lost your answers</string>
+    <string name="mf_quiz_screen_confirm_dialog_label">Yes, please</string>
+    <string name="mf_quiz_screen_cancel_dialog_label">No way</string>
+    <string name="mf_quiz_screen_choosing_answers_label">Your choice: %1$s</string>
+    <string name="mf_quiz_screen_bad_option_label">Ops…</string>
+    <string name="mf_quiz_screen_good_option_label">Yeah…</string>
+    <string name="mf_quiz_screen_correct_answer_label">Correct answer is</string>
+    <string name="mf_quiz_screen_next_question_label">Next</string>
+    <string name="mf_quiz_screen_test_passed_label">Yeah, you are a real fan</string>
+    <string name="mf_quiz_screen_test_passed_expl_label">Now, we can travel!</string>
+    <string name="mf_quiz_screen_test_failed_label">Oh, you are fake</string>
+    <string name="mf_quiz_screen_test_failed_expl_label">You were my excuse to travel!</string>
+    <string name="mf_quiz_screen_return_home_label">Return home</string>
+    <string name="mf_quiz_screen_passed_questions_label">You passed &#160;</string>
+
+
+</resources>

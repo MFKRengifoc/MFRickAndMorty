@@ -1,0 +1,65 @@
+{
+  "questions" : [
+    {
+      "image": "https://rickandmortyapi.com/api/character/avatar/43.jpeg",
+      "correct": "Big Morty",
+      "descriptionCorrect": "Such a weird Morty",
+      "question": "Who is this character?",
+      "options": [
+        "Big Morty",
+        "Big Head Morty"
+      ]
+    },
+    {
+      "image": "https://rickandmortyapi.com/api/character/avatar/117.jpeg",
+      "correct": "Clone",
+      "descriptionCorrect": "Actually, It is Evil Jerry Clone",
+      "question": "What is the type of this character?",
+      "options": [
+        "Human",
+        "Clone",
+        "Male"
+      ]
+    },
+    {
+      "image": "https://rickandmortyapi.com/api/character/avatar/25.jpeg",
+      "correct": "No",
+      "descriptionCorrect": "He died in Episode 2, Season 3",
+      "question": "Is alive this character?",
+      "options": [
+        "No",
+        "Yes, as a spirit"
+      ]
+    },
+    {
+      "image": "https://rickandmortyapi.com/api/character/avatar/329.jpeg",
+      "correct": "Snuffles (Snowball)",
+      "descriptionCorrect": "A hard dog",
+      "question": "What is his name?",
+      "options": [
+        "Snowflake",
+        "Snuffles (Snowball)"
+      ]
+    },
+    {
+      "image": "https://rickandmortyapi.com/api/character/avatar/27.jpeg",
+      "correct": "Ep 10, Season 1",
+      "descriptionCorrect": "Season 10 does not exist",
+      "question": "When did Artist Morty first appear?",
+      "options": [
+        "Ep 10, Season 1",
+        "Ep 1, Season 10"
+      ]
+    },
+    {
+      "image": "https://rickandmortyapi.com/api/character/avatar/306.jpeg",
+      "correct": "No",
+      "descriptionCorrect": "His name is Scary Terry",
+      "question": "Is \"Scare Berry\" his name?",
+      "options": [
+        "No",
+        "Yes"
+      ]
+    }
+  ]
+}
