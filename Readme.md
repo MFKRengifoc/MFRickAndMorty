@@ -15,14 +15,14 @@ With this app you can:
 
 # Dependencies
 
-*ViewModel*: To add the **MVVM** patron in the project
-*Hilt-Dagger*: To add the **dependency injection**: Repositories, Databases
-*Hilt Testing*: For **testing** HTTPS connections and Database Processing
-*Coroutines*: For implement the HTTPS request with concurrency
-*Coil*: To manage image requests
-*Retrofit*: To manage **HTTPS request**
-*OkHttp*: HTTPS client
-*Gson converter*: To parse **JSON** payloads
-*Room*: To manage user preferences and favourites characters using **SQLite API**
-*Navigation*: Use to navigate acroos the app screens
-*Lottie*: To add animations loadings states
+- *ViewModel*: To add the **MVVM** patron in the project.
+- *Hilt-Dagger*: To add the **dependency injection**: Repositories, Databases.
+- *Hilt Testing*: For **testing** HTTPS connections and Database Processing.
+- *Coroutines*: For implement the HTTPS request with concurrency.
+- *Coil*: To manage image requests.
+- *Retrofit*: To manage **HTTPS request**.
+- *OkHttp*: HTTPS client.
+- *Gson converter*: To parse **JSON** payloads.
+- *Room*: To manage user preferences and favourites characters using **SQLite API**.
+- *Navigation*: Use to navigate acroos the app screens.
+- *Lottie*: To add animations loadings states.
