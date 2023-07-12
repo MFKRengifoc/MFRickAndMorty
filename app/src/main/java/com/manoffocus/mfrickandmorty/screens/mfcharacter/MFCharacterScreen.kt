@@ -29,7 +29,8 @@ import com.manoffocus.mfrickandmorty.R
 import com.manoffocus.mfrickandmorty.components.mfcharactersgrid.MFCharacterAvatar
 import com.manoffocus.mfrickandmorty.components.mfcharactersgrid.MFCharacterAvatarSize
 import com.manoffocus.mfrickandmorty.components.mfchipicon.MFChipInfoIcon
-import com.manoffocus.mfrickandmorty.components.mflottie.MFIconLoader
+import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolder
+import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolderSize
 import com.manoffocus.mfrickandmorty.components.mfscrollviews.MFVertical
 import com.manoffocus.mfrickandmorty.components.mfsection.MFSectionForHorizontal
 import com.manoffocus.mfrickandmorty.components.mfsection.MFSectionForVertical
@@ -89,6 +90,7 @@ fun MFCharacterScreen(
                     }
                 },
                 onBackClick = {
+                    mfCharacterViewModel.clear()
                     navController.popBackStack()
                 }
             )
@@ -112,7 +114,10 @@ fun MFCharacterScreen(
                     horizontalAlignmentC = Alignment.CenterHorizontally
                 ) {
                     if (character is Resource.Loading || character is Resource.Empty){
-                        MFIconLoader()
+                        MFLoadingPlaceHolder(
+                            placeholder = R.raw.mf_loading_planets_lottie,
+                            size = MFLoadingPlaceHolderSize.MEDIUM
+                        )
                     } else {
                         if (character is Resource.Success){
                             character.data?.let { char ->

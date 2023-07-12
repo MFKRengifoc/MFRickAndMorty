@@ -10,7 +10,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,9 +45,6 @@ fun MFLocationScreen(
 ) {
     val locationReq = mfLocationViewModel.locationReq.value
     val characters = mfLocationViewModel.characters.value
-    LaunchedEffect(key1 = locationId.value){
-        mfLocationViewModel.getLocationById(locationId.value)
-    }
     val rowModifier = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colors.background)

@@ -20,11 +20,14 @@ class MFRickAndMortyRepositoryDatabase
 
     private val _likes = MutableStateFlow<List<CharacterLike>>(emptyList())
     val likes : StateFlow<List<CharacterLike>> get() = _likes.asStateFlow()
+    private val _quizzes = MutableStateFlow<List<Quiz>>(emptyList())
+    val quizzes : StateFlow<List<Quiz>> get() = _quizzes.asStateFlow()
 
 
     suspend fun insertUser(user: User) : Long = rickAndMortyDao.insertUser(user)
+    suspend fun deleteUser(user: User) = rickAndMortyDao.deleteUser(user)
     suspend fun deleteUsers() = rickAndMortyDao.deleteUsers()
-    fun getUsersDB(): Flow<List<User>> = rickAndMortyDao.getUsers()
+    private fun getUsersDB(): Flow<List<User>> = rickAndMortyDao.getUsers()
 
 
     suspend fun getAllUsers(){
@@ -48,7 +51,12 @@ class MFRickAndMortyRepositoryDatabase
     suspend fun insertLike(like: CharacterLike) = rickAndMortyDao.insertLike(like)
     suspend fun deleteLike(like: CharacterLike) = rickAndMortyDao.deleteLike(like)
     suspend fun insertQuiz(quiz: Quiz) = rickAndMortyDao.insertQuiz(quiz)
-    fun getAllQuiz(): Flow<List<Quiz>> = rickAndMortyDao.getAllQuiz()
+    private fun getAllQuiz(): Flow<List<Quiz>> = rickAndMortyDao.getAllQuiz()
+    suspend fun getAllQuizzes(){
+        getAllQuiz().distinctUntilChanged().collect { quizzes ->
+            _quizzes.value = quizzes
+        }
+    }
     companion object {
         const val TAG = "MFRepositoryDatabase"
     }

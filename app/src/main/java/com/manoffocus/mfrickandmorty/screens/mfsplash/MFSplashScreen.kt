@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -39,7 +38,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun MFSplashScreen(
     navController: NavController,
-    mfSplashScreenViewModel: MFSplashScreenViewModel = hiltViewModel(),
     user: User?
 ) {
     Surface(

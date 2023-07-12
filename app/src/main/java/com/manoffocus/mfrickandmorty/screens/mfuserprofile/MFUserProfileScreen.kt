@@ -15,7 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,6 +36,7 @@ import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTextTitle
 import com.manoffocus.mfrickandmorty.components.mftopbar.MFTopBar
 import com.manoffocus.mfrickandmorty.components.mfuserprofilecontent.MFLikesContent
 import com.manoffocus.mfrickandmorty.components.mfuserprofilecontent.MFQuizzesContent
+import com.manoffocus.mfrickandmorty.models.db.User
 import com.manoffocus.mfrickandmorty.navigation.MFScreens
 import com.manoffocus.mfrickandmorty.ui.theme.mfTextVPadding
 import com.manoffocus.mfrickandmorty.ui.theme.topBottomPaddingBg
@@ -42,12 +44,20 @@ import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
 
 @Composable
 fun MFUserProfileScreen(
-   navController: NavController,
-   mfUserProfileViewModel: MFUserProfileViewModel = hiltViewModel()
+    navController: NavController,
+    mfUserProfileViewModel: MFUserProfileViewModel = hiltViewModel(),
+    user: User?
 ) {
-    val user = mfUserProfileViewModel.user.value
-    val finishedQuiz = mfUserProfileViewModel.finishedQuiz.collectAsState().value
+    val finishedQuiz = mfUserProfileViewModel.finishedQuiz.value
     val likes = mfUserProfileViewModel.likes.value
+    LaunchedEffect(Unit){
+        mfUserProfileViewModel.getData()
+    }
+    DisposableEffect(Unit){
+        onDispose {
+            mfUserProfileViewModel.clear()
+        }
+    }
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colors.background),
         topBar = {
@@ -55,6 +65,7 @@ fun MFUserProfileScreen(
                 user = user,
                 actualScreen = MFScreens.MFUserProfileScreen,
                 onBackClick = {
+                    mfUserProfileViewModel.clear()
                     navController.popBackStack()
                 }
             )

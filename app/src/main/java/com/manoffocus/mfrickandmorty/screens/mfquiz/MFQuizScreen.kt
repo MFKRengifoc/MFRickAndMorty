@@ -5,16 +5,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,13 +33,16 @@ import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolder
 import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolderSize
 import com.manoffocus.mfrickandmorty.components.mfquiz.MFQuizInfo
 import com.manoffocus.mfrickandmorty.components.mfquiz.MFQuizQuestions
+import com.manoffocus.mfrickandmorty.components.mfsurface.MFSurface
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTexSizes
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTexTitleSizes
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFText
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTextTitle
 import com.manoffocus.mfrickandmorty.components.mftopbar.MFTopBar
+import com.manoffocus.mfrickandmorty.models.db.User
 import com.manoffocus.mfrickandmorty.navigation.MFScreens
 import com.manoffocus.mfrickandmorty.ui.theme.darkError
+import com.manoffocus.mfrickandmorty.ui.theme.sidesPaddingBg
 import com.manoffocus.mfrickandmorty.ui.theme.topBottomPaddingBg
 import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
 import java.util.Date
@@ -48,16 +50,19 @@ import java.util.Date
 @Composable
 fun MFQuizScreen(
     navController: NavController,
-    mfQuizViewModel: MFQuizViewModel = hiltViewModel()
+    mfQuizViewModel: MFQuizViewModel = hiltViewModel(),
+    user: User?
 ) {
-    val user = mfQuizViewModel.user.value
     val quiz = mfQuizViewModel.quiz.value
     val finishedQuiz = remember { mutableStateOf(false) }
     val correctQuestions = remember { mutableStateOf(0) }
     val preparedButtonClicked = remember { mutableStateOf(false) }
     var timeStarted : Date? = null
     val leavingQuiz = remember { mutableStateOf(false) }
-    mfQuizViewModel.getJsonDataFromAsset(LocalContext.current)
+    val ctx = LocalContext.current
+    LaunchedEffect(Unit){
+        mfQuizViewModel.getJsonDataFromAsset(ctx)
+    }
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colors.background),
         topBar = {
@@ -133,14 +138,10 @@ fun MFQuizScreen(
                 }
             }
         }
-        Surface(
+        MFSurface(
             modifier = Modifier
-                .background(MaterialTheme.colors.background)
                 .padding(it)
-                .padding(start = topBottomPaddingBg)
-                .padding(vertical = verticalPaddingBg)
-                .fillMaxSize(),
-            color = MaterialTheme.colors.background
+                .padding(start = sidesPaddingBg)
         ) {
             Column(
                 modifier = Modifier
@@ -149,9 +150,13 @@ fun MFQuizScreen(
                     .background(color = MaterialTheme.colors.background)
             ) {
                 if (!preparedButtonClicked.value){
-                    MFQuizInfo {
-                        timeStarted = Date()
-                        preparedButtonClicked.value = true
+                    quiz.questions?.let { questions ->
+                        MFQuizInfo(
+                            questionsSize = questions.size
+                        ) {
+                            timeStarted = Date()
+                            preparedButtonClicked.value = true
+                        }
                     }
                 } else {
                     if (!finishedQuiz.value){
@@ -177,68 +182,71 @@ fun MFQuizScreen(
                           verticalArrangement = Arrangement.Center,
                           horizontalAlignment = Alignment.CenterHorizontally
                       ) {
-                          val testPassed = (correctQuestions.value > 3)
-                          var lottie = R.raw.mf_morty_dancing_lottie
-                          var color = MaterialTheme.colors.primary
-                          var title = stringResource(id = R.string.mf_quiz_screen_test_passed_label)
-                          var text = stringResource(id = R.string.mf_quiz_screen_test_passed_expl_label)
-                          if (!testPassed){
-                              lottie = R.raw.mf_morty_crying_lottie
-                              title = stringResource(id = R.string.mf_quiz_screen_test_failed_label)
-                              text = stringResource(id = R.string.mf_quiz_screen_test_failed_expl_label)
-                              color = darkError
-                          }
-                          MFLoadingPlaceHolder(
-                              modifier = Modifier
-                                  .padding(vertical = verticalPaddingBg),
-                              placeholder = lottie,
-                              size = MFLoadingPlaceHolderSize.LARGE,
-                          )
-                          MFTextTitle(
-                              modifier = Modifier
-                                  .padding(vertical = verticalPaddingBg),
-                              text = title,
-                              size = MFTexTitleSizes.LARGE,
-                              maxWidth = 300.dp
-                          )
-                          MFText(
-                              text = text,
-                              color = MaterialTheme.colors.secondary,
-                              size = MFTexSizes.MEDIUM
-                          )
-                          Row(
-                              modifier = Modifier
-                                  .fillMaxWidth()
-                                  .padding(vertical = verticalPaddingBg)
-                                  .padding(bottom = topBottomPaddingBg),
-                              horizontalArrangement = Arrangement.Center
-                          ) {
-                              quiz.questions?.let { qList ->
-                                  MFText(
-                                      text = stringResource(id = R.string.mf_quiz_screen_passed_questions_label),
-                                      size = MFTexSizes.LARGE
-                                  )
-                                  MFText(
-                                      text = "${correctQuestions.value}",
-                                      color = color,
-                                      size = MFTexSizes.LARGE
-                                  )
-                                  MFText(
-                                      text = "/",
-                                      size = MFTexSizes.LARGE
-                                  )
-                                  MFText(
-                                      text = "${qList.size}",
-                                      size = MFTexSizes.LARGE
-                                  )
+                          quiz.questions?.let { questions ->
+                              val testPassed = (correctQuestions.value >= questions.size / 2)
+                              var lottie = R.raw.mf_morty_dancing_lottie
+                              var color = MaterialTheme.colors.primary
+                              var title = stringResource(id = R.string.mf_quiz_screen_test_passed_label)
+                              var text = stringResource(id = R.string.mf_quiz_screen_test_passed_expl_label)
+                              if (!testPassed){
+                                  lottie = R.raw.mf_morty_crying_lottie
+                                  title = stringResource(id = R.string.mf_quiz_screen_test_failed_label)
+                                  text = stringResource(id = R.string.mf_quiz_screen_test_failed_expl_label)
+                                  color = darkError
+                              }
+                              MFLoadingPlaceHolder(
+                                  modifier = Modifier
+                                      .padding(vertical = verticalPaddingBg),
+                                  placeholder = lottie,
+                                  size = MFLoadingPlaceHolderSize.LARGE,
+                              )
+                              MFTextTitle(
+                                  modifier = Modifier
+                                      .padding(vertical = verticalPaddingBg),
+                                  text = title,
+                                  size = MFTexTitleSizes.LARGE,
+                                  maxWidth = 300.dp
+                              )
+                              MFText(
+                                  text = text,
+                                  color = MaterialTheme.colors.secondary,
+                                  size = MFTexSizes.MEDIUM
+                              )
+                              Row(
+                                  modifier = Modifier
+                                      .fillMaxWidth()
+                                      .padding(vertical = verticalPaddingBg)
+                                      .padding(bottom = topBottomPaddingBg),
+                                  horizontalArrangement = Arrangement.Center
+                              ) {
+                                  quiz.questions?.let { qList ->
+                                      MFText(
+                                          text = stringResource(id = R.string.mf_quiz_screen_passed_questions_label),
+                                          size = MFTexSizes.LARGE
+                                      )
+                                      MFText(
+                                          text = "${correctQuestions.value}",
+                                          color = color,
+                                          size = MFTexSizes.LARGE
+                                      )
+                                      MFText(
+                                          text = "/",
+                                          size = MFTexSizes.LARGE
+                                      )
+                                      MFText(
+                                          text = "${qList.size}",
+                                          size = MFTexSizes.LARGE
+                                      )
+                                  }
+                              }
+                              MFButton(
+                                  text = stringResource(id = R.string.mf_quiz_screen_return_home_label),
+                                  icon = Icons.Default.Home
+                              ){
+                                  navController.popBackStack()
                               }
                           }
-                          MFButton(
-                              text = stringResource(id = R.string.mf_quiz_screen_return_home_label),
-                              icon = Icons.Default.Home
-                          ){
-                              navController.popBackStack()
-                          }
+
                       }
                     }
                 }

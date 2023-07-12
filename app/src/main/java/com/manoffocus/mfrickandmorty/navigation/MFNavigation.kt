@@ -6,6 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -54,7 +55,8 @@ fun MFNavigation(
         }
         composable(MFScreens.MFProfilerScreen.name){
             MFProfilerScreen(
-                navController = navController
+                navController = navController,
+                networkStatus = networkStatus
             )
         }
         composable(MFScreens.MFFanInfoScreen.name){
@@ -74,9 +76,12 @@ fun MFNavigation(
         composable(route = "$mfLocationScreen/{idLocation}", arguments = listOf(navArgument(name = "idLocation"){
             type = NavType.IntType
         }) ){ entry ->
-            val id = remember { mutableStateOf(-1) }
+            val id = rememberSaveable { mutableStateOf(-1) }
             entry.arguments?.getInt("idLocation")?.let { args ->
                 id.value = args
+            }
+            LaunchedEffect(key1 = id.value){
+                mfLocationViewModel.getLocationById(id.value)
             }
             if (id.value != -1){
                 MFLocationScreen(
@@ -90,7 +95,8 @@ fun MFNavigation(
         }
         composable(MFScreens.MFUserProfileScreen.name){
             MFUserProfileScreen(
-                navController = navController
+                navController = navController,
+                user = user.data
             )
         }
         val mfSeasonScreen = MFScreens.MFSeasonScreen.name
@@ -136,7 +142,8 @@ fun MFNavigation(
         }
         composable(MFScreens.MFQuizScreen.name){
             MFQuizScreen(
-                navController = navController
+                navController = navController,
+                user = user.data
             )
         }
     }

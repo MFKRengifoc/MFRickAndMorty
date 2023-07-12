@@ -37,6 +37,7 @@
     <string name="mf_profiler_continue_ask_label">Continue?</string>
     <string name="mf_profiler_screen_no_thanks">No, I just asked you for the time, doc</string>
     <string name="mf_profiler_screen_toast_good_choice">Good choice</string>
+    <string name="mf_profiler_screen_try_connect">Try to connect a network</string>
 
 
     <!--  MFFanInfoScreen  -->
@@ -131,9 +132,9 @@
     </string-array>
     <string-array name="mf_quiz_screen_expltwo">
         <item>I am goint to ask you &#160;</item>
-        <item>6 questions</item>
+        <item>&#160;questions</item>
     </string-array>
-    <string name="mf_quiz_screen_explthr">4 correct for passing</string>
+    <string name="mf_quiz_screen_explthr">%1$s correct for passing</string>
     <string name="mf_quiz_screen_explfrh">If you pass it, you can go with Morty</string>
     <string name="mf_quiz_screen_prepared_but">Prepared?</string>
     <string name="mf_quiz_screen_leave_quiz_ask">Oh…</string>

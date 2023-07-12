@@ -33,7 +33,7 @@ sealed class MFUserFormInputFilter(): MFUserFormInputFilterIF{
     class Range(var min: Int, var max: Int): MFUserFormInputFilter(){
         override fun validate(value: String): Map<String, String> {
             if (value.trim().isEmpty()) return mapOf(Pair("notARange", value))
-            if (!value.trim().isDigitsOnly()) return mapOf(Pair("notARange", value))
+            if (!value.isDigitsOnly()) return mapOf(Pair("notARange", value))
             val result = when{
                 value.toInt() < min -> mapOf(Pair("minRange", "$min"))
                 value.toInt() > max -> mapOf(Pair("maxRange", "$max"))
@@ -68,7 +68,7 @@ sealed class MFUserFormInputFilter(): MFUserFormInputFilterIF{
     }
     class LettersOnly(): MFUserFormInputFilter(){
         override fun validate(value: String): Map<String, String> {
-            val pattern = Regex("^[a-zA-Z]+\$")
+            val pattern = Regex("^[a-zA-Z|\\s]+\$")
             return if (!pattern.matches(value)) mapOf(Pair("lettersOnly", value))
             else mapOf()
         }

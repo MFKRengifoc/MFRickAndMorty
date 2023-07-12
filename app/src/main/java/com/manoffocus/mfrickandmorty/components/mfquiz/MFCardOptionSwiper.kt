@@ -3,7 +3,6 @@ package com.manoffocus.mfrickandmorty.components.mfswiper
 import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -19,13 +18,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInteropFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.manoffocus.mfrickandmorty.R
 import com.manoffocus.mfrickandmorty.components.mfbutton.MFButton
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterGuard
+import com.manoffocus.mfrickandmorty.components.mfquiz.MFQuizAvatarAndQuestion
+import com.manoffocus.mfrickandmorty.components.mfsection.MFSectionForVertical
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTexSizes
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFText
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTextTitle
@@ -108,7 +107,7 @@ fun MFCardOptionSwiper(
 ){
     val chosenOption = remember{ mutableStateOf("") }
     val onSwipingOption = remember { mutableStateOf("") }
-    val colorBg = when{
+    val colorBg = when {
         chosenOption.value == "" -> MaterialTheme.colors.onPrimary
         chosenOption.value == question.correct -> MaterialTheme.colors.primaryVariant
         chosenOption.value != question.correct -> darkError
@@ -116,7 +115,6 @@ fun MFCardOptionSwiper(
             MaterialTheme.colors.primaryVariant
         }
     }
-
     var alreadyInitAnimate = false
     val swipeState = rememberSwipeState()
     val position = remember { mutableStateOf(0.dp) }
@@ -137,193 +135,162 @@ fun MFCardOptionSwiper(
             alreadyInitAnimate = true
         })
     }
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.2F)
-            .padding(bottom = topBottomPaddingBg * 4),
-        contentAlignment = Alignment.Center
-    ){
-        if (onSwipingOption.value != ""){
-            MFText(
-                text = stringResource(id = R.string.mf_quiz_screen_choosing_answers_label, onSwipingOption.value)
-            )
-        }
-    }
-
-    Card(
+    Column(
         modifier = modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.horizontalGradient(
-                    colors = listOf(
-                        rickFirstColor,
-                        rickSecondColor
-                    )
-                ),
-                shape = RoundedCornerShape(corner = CornerSize(mfSwiperCornerSize))
-            )
-            .offset(x = pos)
-            .graphicsLayer {
-                rotationZ = rot
-            }
-            .pointerInteropFilter {
-                if (chosenOption.value == "") {
-                    swipeState.onSwipe(it) { swipeDirection, amountDrag, rotation, hasReachedThreshold, lastSwipeDirection ->
-                        when (swipeDirection) {
-                            SwipeDirection.NONE -> {
-                                position.value = amountDrag.dp
-                                rotate.value = 0.0F
-                                when {
-                                    hasReachedThreshold && lastSwipeDirection == SwipeDirection.LEFT -> {
-                                        chosenOption.value = question.options[0]
-                                    }
-                                    hasReachedThreshold && lastSwipeDirection == SwipeDirection.RIGHT -> {
-                                        chosenOption.value = question.options[1]
-                                    }
-                                    else -> {
-                                        onSwipingOption.value = ""
-                                    }
-                                }
-                            }
-                            else -> {
-                                position.value = amountDrag.dp
-                                rotate.value = rotation
-                                when (swipeDirection) {
-                                    SwipeDirection.LEFT -> {
-                                        onSwipingOption.value = question.options[0]
-                                    }
-                                    SwipeDirection.RIGHT -> {
-                                        onSwipingOption.value = question.options[1]
-                                    }
-                                    else -> {
-                                        onSwipingOption.value = ""
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    true
-                } else {
-                    false
-                }
-            },
-        elevation = 20.dp,
-        shape = RoundedCornerShape(corner = CornerSize(mfSwiperCornerSize))
     ) {
         Box(
-            modifier = modifier
-        ){
-            val colMod = Modifier
-                .fillMaxHeight()
+            modifier = Modifier
                 .fillMaxWidth()
-            Column(
-                modifier = colMod
-                    .background(
-                        color = colorBg,
-                        shape = RoundedCornerShape(corner = CornerSize(mfSwiperCornerSize))
-                    ),
-                verticalArrangement = Arrangement.spacedBy(
-                    space = 10.dp,
-                    alignment = Alignment.CenterVertically
-                ),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (chosenOption.value != ""){
-                    val optionRes = when(chosenOption.value == question.correct){
-                        true -> {stringResource(id = R.string.mf_quiz_screen_good_option_label)}
-                        false -> {stringResource(id = R.string.mf_quiz_screen_bad_option_label)}
-                    }
-                    val text = remember(optionRes) {
-                        mutableStateOf(optionRes)
-                    }
-                    MFCharacterGuard(
-                        msg = text
-                    )
-                    MFTextTitle(
-                        text = stringResource(id = R.string.mf_quiz_screen_correct_answer_label)
-                    )
-                    MFText(
-                        text = question.correct
-                    )
-                    MFText(
-                        text = question.descriptionCorrect,
-                        size = MFTexSizes.SMALL,
-                        color = MaterialTheme.colors.onPrimary
-                    )
-                    MFButton(
-                        text = stringResource(id = R.string.mf_quiz_screen_next_question_label)
-                    ){
-                        onNext.invoke(chosenOption.value == question.correct)
-                        chosenOption.value = ""
-                        onSwipingOption.value = ""
-                    }
-                }
+                .padding(bottom = topBottomPaddingBg * 4)
+                .weight(0.1F),
+            contentAlignment = Alignment.Center
+        ){
+            if (onSwipingOption.value != ""){
+                MFText(
+                    text = stringResource(id = R.string.mf_quiz_screen_choosing_answers_label, onSwipingOption.value)
+                )
             }
-            if (chosenOption.value == ""){
+        }
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.9F)
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            rickFirstColor,
+                            rickSecondColor
+                        )
+                    ),
+                    shape = RoundedCornerShape(corner = CornerSize(mfSwiperCornerSize))
+                )
+                .offset(x = pos)
+                .graphicsLayer {
+                    rotationZ = rot
+                }
+                .pointerInteropFilter {
+                    if (chosenOption.value == "") {
+                        swipeState.onSwipe(it) { swipeDirection, amountDrag, rotation, hasReachedThreshold, lastSwipeDirection ->
+                            when (swipeDirection) {
+                                SwipeDirection.NONE -> {
+                                    position.value = amountDrag.dp
+                                    rotate.value = 0.0F
+                                    when {
+                                        hasReachedThreshold && lastSwipeDirection == SwipeDirection.LEFT -> {
+                                            chosenOption.value = question.options[0]
+                                        }
+
+                                        hasReachedThreshold && lastSwipeDirection == SwipeDirection.RIGHT -> {
+                                            chosenOption.value = question.options[1]
+                                        }
+
+                                        else -> {
+                                            onSwipingOption.value = ""
+                                        }
+                                    }
+                                }
+
+                                else -> {
+                                    position.value = amountDrag.dp
+                                    rotate.value = rotation
+                                    when (swipeDirection) {
+                                        SwipeDirection.LEFT -> {
+                                            onSwipingOption.value = question.options[0]
+                                        }
+
+                                        SwipeDirection.RIGHT -> {
+                                            onSwipingOption.value = question.options[1]
+                                        }
+
+                                        else -> {
+                                            onSwipingOption.value = ""
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        true
+                    } else {
+                        false
+                    }
+                },
+            elevation = 20.dp,
+            shape = RoundedCornerShape(corner = CornerSize(mfSwiperCornerSize))
+        ) {
+            Box(
+                modifier = modifier
+            ){
+                val colMod = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
                 Column(
                     modifier = colMod
-                        .padding(bottom = topBottomPaddingBg * 3)
                         .background(
-                            color = MaterialTheme.colors.background
-                        )
-                        .border(
-                            width = 2.dp,
-                            color = MaterialTheme.colors.primaryVariant,
-                            shape = RoundedCornerShape(
-                                topStart = CornerSize(mfSwiperCornerSize),
-                                topEnd = CornerSize(mfSwiperCornerSize),
-                                bottomEnd = CornerSize(0.dp),
-                                bottomStart = CornerSize(0.dp)
-                            )
+                            color = colorBg,
+                            shape = RoundedCornerShape(corner = CornerSize(mfSwiperCornerSize))
                         ),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.spacedBy(
+                        space = 10.dp,
+                        alignment = Alignment.CenterVertically
+                    ),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    if (chosenOption.value != ""){
+                        val optionRes = when(chosenOption.value == question.correct){
+                            true -> {stringResource(id = R.string.mf_quiz_screen_good_option_label)}
+                            false -> {stringResource(id = R.string.mf_quiz_screen_bad_option_label)}
+                        }
+                        val text = remember(optionRes) {
+                            mutableStateOf(optionRes)
+                        }
+                        MFCharacterGuard(
+                            msg = text
+                        )
+                        MFTextTitle(
+                            text = stringResource(id = R.string.mf_quiz_screen_correct_answer_label)
+                        )
+                        MFText(
+                            text = question.correct,
+                        )
+                        MFText(
+                            text = question.descriptionCorrect,
+                            size = MFTexSizes.SMALL,
+                            color = MaterialTheme.colors.onPrimary
+                        )
+                        MFButton(
+                            text = stringResource(id = R.string.mf_quiz_screen_next_question_label)
+                        ){
+                            onNext.invoke(chosenOption.value == question.correct)
+                            chosenOption.value = ""
+                            onSwipingOption.value = ""
+                        }
+                    }
+                }
+                if (chosenOption.value == ""){
                     val rowMod = Modifier
                         .fillMaxWidth()
-                    Row(
-                        modifier = rowMod.fillMaxHeight()
+                    Column(
+                        modifier = colMod
+                            .fillMaxHeight()
+                            .padding(bottom = topBottomPaddingBg * 3)
+                            .background(
+                                color = MaterialTheme.colors.background
+                            )
+                            .border(
+                                width = 2.dp,
+                                color = MaterialTheme.colors.primaryVariant,
+                                shape = RoundedCornerShape(
+                                    topStart = CornerSize(mfSwiperCornerSize),
+                                    topEnd = CornerSize(mfSwiperCornerSize),
+                                    bottomEnd = CornerSize(0.dp),
+                                    bottomStart = CornerSize(0.dp)
+                                )
+                            ),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .fillMaxWidth(0.5F),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(
-                                space = 20.dp,
-                                alignment = Alignment.CenterVertically
-                            )
-                        ) {
-                            MFText(
-                                text = question.options[0],
-                                align = TextAlign.Center
-                            )
-                            Image(
-                                painter = painterResource(id = R.drawable.mf_option_left_icon),
-                                contentDescription = question.options[0],
-                                modifier = Modifier.size(60.dp)
-                            )
-                        }
-                        Column(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(
-                                space = 20.dp,
-                                alignment = Alignment.CenterVertically
-                            )
-                        ) {
-                            MFText(
-                                text = question.options[1],
-                                align = TextAlign.Center
-                            )
-                            Image(
-                                painter = painterResource(id = R.drawable.mf_option_right_icon),
-                                contentDescription = question.options[1],
-                                modifier = Modifier.size(60.dp)
-                            )
+                        MFSectionForVertical(modifier = rowMod) {
+                            MFQuizAvatarAndQuestion(modifier = Modifier, question = question)
                         }
                     }
                 }

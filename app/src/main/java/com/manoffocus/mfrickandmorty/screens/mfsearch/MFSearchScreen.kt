@@ -62,6 +62,7 @@ fun MFSearchScreen(
                 },
                 searchText = searchText,
                 onBackClick = {
+                    mfSearchViewModel.clear()
                     navController.popBackStack()
                 }
             )

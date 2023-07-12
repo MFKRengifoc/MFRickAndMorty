@@ -1,6 +1,5 @@
 package com.manoffocus.mfrickandmorty.components.mfcharactersgrid
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,12 +12,15 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -38,6 +40,7 @@ fun MFCharacterGrid(
     modifier: Modifier,
     listOfCharacters: List<MFCharacter>,
     columns: Int,
+    selectedCharacter: MutableState<Int>? = null,
     onChooseAvatar: (Int, String) -> Unit
 ) {
     LazyVerticalGrid(
@@ -48,13 +51,20 @@ fun MFCharacterGrid(
         )
     ){
         items(listOfCharacters){ character ->
-            Log.d("MFCharacterGrid", "${character.id}")
             MFCharacterAvatar(
-                modifier = Modifier,
+                modifier = Modifier
+                    .border(
+                        width = if (selectedCharacter != null && character.id == selectedCharacter.value) 1.dp else 0.dp,
+                        color = if (selectedCharacter != null && character.id == selectedCharacter.value) Color.White else Color.Transparent,
+                        shape = RoundedCornerShape(5.dp)
+                    ),
                 size = MFCharacterAvatarSize.SMALL,
                 characterUrl = character.image,
                 characterName = character.name,
             ){
+                selectedCharacter?.let { sc ->
+                    sc.value = character.id
+                }
                 onChooseAvatar.invoke(character.id, character.image)
             }
         }
@@ -62,6 +72,7 @@ fun MFCharacterGrid(
 }
 
 enum class MFCharacterAvatarSize(var size: Dp){
+    XLARGE(size = 260.dp),
     LARGE(size = 200.dp),
     MEDIUM(size = 100.dp),
     SMALL(size = 70.dp),
@@ -69,6 +80,7 @@ enum class MFCharacterAvatarSize(var size: Dp){
     companion object {
         fun fromCharacterSize(size: MFCharacterAvatarSize): MFTexSizes {
             return when(size){
+                XLARGE -> MFTexSizes.XLARGE
                 LARGE -> MFTexSizes.LARGE
                 MEDIUM -> MFTexSizes.MEDIUM
                 SMALL -> MFTexSizes.SMALL
@@ -87,14 +99,17 @@ fun MFCharacterAvatar(
     onChoose: () -> Unit
 ){
     Column(
-        modifier = modifier.width(IntrinsicSize.Min),
+        modifier = modifier
+            .width(IntrinsicSize.Min)
+            .clickable { onChoose.invoke() }
+        ,
         verticalArrangement = Arrangement.spacedBy(
             space = 2.dp
         ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Card(
-            modifier = modifier
+            modifier = Modifier
                 .size(size.size)
                 .padding(5.dp)
                 .clip(CircleShape)

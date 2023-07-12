@@ -14,6 +14,8 @@ interface MFRickAndMortyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User): Long
+    @Delete
+    suspend fun deleteUser(user: User)
     @Query("DELETE from user_tbl")
     suspend fun deleteUsers()
 

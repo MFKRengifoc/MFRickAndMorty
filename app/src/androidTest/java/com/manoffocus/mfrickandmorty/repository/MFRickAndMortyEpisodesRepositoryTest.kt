@@ -1,7 +1,6 @@
 package com.manoffocus.mfrickandmorty.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.manoffocus.mfrickandmorty.commons.Constants
 import com.manoffocus.mfrickandmorty.data.RepositoryExceptionCodes
 import com.manoffocus.mfrickandmorty.network.RickAndMortyAPI
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -15,6 +14,7 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @HiltAndroidTest
 class MFRickAndMortyEpisodesRepositoryTest {
@@ -27,6 +27,8 @@ class MFRickAndMortyEpisodesRepositoryTest {
         .connectTimeout(BASIC_TIME_SECS, TimeUnit.SECONDS)
         .readTimeout(BASIC_TIME_SECS, TimeUnit.SECONDS)
         .build()
+    @Inject
+    lateinit var repository : MFRickAndMortyEpisodesRepository
     @Before
     fun setup(){
         hiltAndroidRule.inject()
@@ -63,17 +65,42 @@ class MFRickAndMortyEpisodesRepositoryTest {
     }
     @Test
     fun getEpisodesBySeasonCode_ReturnNotFoundTest(){
-        val rf = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-        val api = rf.create(RickAndMortyAPI::class.java)
-        val mfRickAndMortyEpisodesRepository = MFRickAndMortyEpisodesRepository(api)
         runBlocking {
             val code = "S10"
-            val req = mfRickAndMortyEpisodesRepository.getEpisodesBySeasonCode(code)
+            val req = repository.getEpisodesBySeasonCode(code)
             Assert.assertEquals(RepositoryExceptionCodes.NOTHING_HERE_EXCEPTION, req.value.code)
+        }
+    }
+    @Test
+    fun getEpisodesBySeasonCode_ReturnEpisodes(){
+        runBlocking {
+            val code = "S01"
+            val req = repository.getEpisodesBySeasonCode(code)
+            req.value.data?.let { data ->
+                data.results?.let { results ->
+                    var episodesOk = true
+                    for (episode in results){
+                        if (!episode.episode.contains(code)) episodesOk = false
+                    }
+                    Assert.assertTrue(episodesOk)
+                }
+            }
+        }
+    }
+    @Test
+    fun getEpisodesBySeasonCode_ReturnSeasonsByFirstEpisode(){
+        runBlocking {
+            val code = "E01"
+            val req = repository.getEpisodesBySeasonCode(code)
+            req.value.data?.let { data ->
+                data.results?.let { results ->
+                    var episodesOk = true
+                    for (episode in results){
+                        if (!episode.episode.contains(code)) episodesOk = false
+                    }
+                    Assert.assertTrue(episodesOk)
+                }
+            }
         }
     }
 }

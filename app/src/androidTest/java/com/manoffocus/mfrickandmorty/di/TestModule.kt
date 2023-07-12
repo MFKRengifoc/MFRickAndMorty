@@ -24,7 +24,6 @@ import javax.inject.Singleton
 @TestInstallIn(components = [SingletonComponent::class], replaces = [MFRickAndMortyDatabaseModule::class, MFNetworkModule::class])
 @Module
 class TestModule {
-
     @Singleton
     @Provides
     fun provideRickAndMortyDatabaseTest(@ApplicationContext ctx: Context): MFRickAndMortyDatabase {
@@ -36,7 +35,6 @@ class TestModule {
     @Provides
     fun provideRickAndMortyDaoTest(rickAndMortyDatabase: MFRickAndMortyDatabase): MFRickAndMortyDao = rickAndMortyDatabase.rickAndMortyDao()
 
-
     @Singleton
     @Provides
     fun provideOkHttpClientTest(): OkHttpClient {
@@ -45,7 +43,6 @@ class TestModule {
             .readTimeout(15, TimeUnit.SECONDS)
             .build()
     }
-
     @Singleton
     @Provides
     fun provideRickAndMortyApiTest(okHttpClient: OkHttpClient): Retrofit {

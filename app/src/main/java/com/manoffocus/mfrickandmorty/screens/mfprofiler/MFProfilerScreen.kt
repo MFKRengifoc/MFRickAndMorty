@@ -11,13 +11,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -26,6 +30,7 @@ import com.manoffocus.mfrickandmorty.components.mfbutton.MFButton
 import com.manoffocus.mfrickandmorty.components.mfcharactersgrid.MFCharacterGrid
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterGuard
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterMsgSize
+import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterTextPosition
 import com.manoffocus.mfrickandmorty.components.mfform.MFUserForm
 import com.manoffocus.mfrickandmorty.components.mfform.MFUserFormInputData
 import com.manoffocus.mfrickandmorty.components.mfform.MFUserFormInputFilter
@@ -43,16 +48,23 @@ import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
 @Composable
 fun MFProfilerScreen(
     navController: NavController,
-    viewModel: MFProfilerViewModel = hiltViewModel()
+    viewModel: MFProfilerViewModel = hiltViewModel(),
+    networkStatus: MutableState<Pair<String, Boolean>>
 ) {
     val onClickedContinue = rememberSaveable { mutableStateOf(false) }
     val validText = rememberSaveable { mutableStateOf("") }
     val ageStateValue = rememberSaveable { mutableStateOf("") }
     val chosenAvatar = rememberSaveable { mutableStateOf(-1) }
     val chosenAvatarUrl = rememberSaveable { mutableStateOf("") }
-    val validForm = rememberSaveable{ mutableStateOf(false) }
-    LaunchedEffect(Unit){
+    val validForm = rememberSaveable { mutableStateOf(false) }
+    val firstCharacters = viewModel.firstCharacters.value
+    LaunchedEffect(networkStatus.value){
         viewModel.loadFirstCharacters()
+    }
+    DisposableEffect(Unit){
+        onDispose {
+            viewModel.clear()
+        }
     }
     MFSurface(
         modifier = Modifier
@@ -61,7 +73,8 @@ fun MFProfilerScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colors.background)
+                .background(color = MaterialTheme.colors.background),
+            verticalArrangement = Arrangement.Center
         ) {
             val rowModifier = Modifier
                 .fillMaxWidth()
@@ -103,7 +116,7 @@ fun MFProfilerScreen(
                             weight = 0.6F,
                             filters = arrayOf(
                                 MFUserFormInputFilter.LengthMin(3),
-                                MFUserFormInputFilter.LengthMax(10),
+                                MFUserFormInputFilter.LengthMax(15),
                                 MFUserFormInputFilter.LettersOnly(),
                                 MFUserFormInputFilter.Required()
                             ), onValueChanges = { new, prev ->
@@ -133,25 +146,46 @@ fun MFProfilerScreen(
                 ){  valid ->
                     validForm.value = valid
                 }
-                if (validForm.value){
-                    MFSectionForVertical(
-                        modifier = rowModifier,
-                        horizontalAlignmentC = Alignment.Start
-                    ) {
-                        MFTextTitle(
-                            text = stringResource(id = R.string.mf_profiler_screen_choose_character_icon_label)
-                        )
-                        viewModel.firstCharacters.value.data?.let { characters ->
-                            MFCharacterGrid(
-                                modifier = rowModifier,
-                                listOfCharacters = characters,
-                                columns = 3
-                            ){ character, avatar_url ->
-                                chosenAvatar.value = character
-                                chosenAvatarUrl.value = avatar_url
+                if (networkStatus.value.second){
+                    if (validForm.value){
+                        MFSectionForVertical(
+                            modifier = rowModifier,
+                            horizontalAlignmentC = Alignment.Start
+                        ) {
+                            MFTextTitle(
+                                text = stringResource(id = R.string.mf_profiler_screen_choose_character_icon_label)
+                            )
+                            firstCharacters.data?.let { characters ->
+                                MFCharacterGrid(
+                                    modifier = rowModifier,
+                                    listOfCharacters = characters,
+                                    columns = 3,
+                                    selectedCharacter = chosenAvatar
+                                ){ character, avatar_url ->
+                                    chosenAvatar.value = character
+                                    chosenAvatarUrl.value = avatar_url
+                                }
                             }
                         }
                     }
+                } else {
+                    val msgGuard = stringResource(id = R.string.mf_home_screen_disconnected_label)
+                    val mutableMsg = remember {
+                        mutableStateOf(msgGuard)
+                    }
+                    MFCharacterGuard(
+                        msg = mutableMsg,
+                        dialogSize = MFCharacterMsgSize.BIG,
+                        textPosition = MFCharacterTextPosition.LEFT,
+                        icon = R.drawable.mf_morty_icon
+                    )
+                    MFText(
+                        text = stringResource(id = R.string.mf_profiler_screen_try_connect),
+                        size = MFTexSizes.LARGE,
+                        align = TextAlign.Center,
+                        color = MaterialTheme.colors.error,
+                        modifier = Modifier.padding(vertical = verticalPaddingBg)
+                    )
                 }
             }
             MFSectionForVertical(
@@ -160,7 +194,7 @@ fun MFProfilerScreen(
                 if (chosenAvatar.value != -1 && validForm.value){
                     MFButton( text = stringResource(id = R.string.mf_profiler_continue_ask_label) ){
                         viewModel.insertUser(
-                            name = validText.value,
+                            name = validText.value.trim(),
                             age = ageStateValue.value.toInt(),
                             characterId = chosenAvatar.value,
                             avatarUrl = chosenAvatarUrl.value

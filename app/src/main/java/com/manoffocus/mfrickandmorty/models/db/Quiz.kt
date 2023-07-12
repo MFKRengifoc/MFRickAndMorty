@@ -23,5 +23,5 @@ data class Quiz(
     @ColumnInfo(name = "timestamp_finished")
     val timestampFinished: Date,
     @ColumnInfo(name = "user_id")
-    val userId: Int,
+    val userId: Long,
 )

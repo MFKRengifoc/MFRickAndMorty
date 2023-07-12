@@ -1,6 +1,16 @@
 {
   "questions" : [
     {
+      "image": "https://rickandmortyapi.com/api/character/avatar/237.jpeg",
+      "correct": "falling",
+      "descriptionCorrect": "He falls entire episode, Ep 1 Season 2",
+      "question": "Mr. Benson is ...",
+      "options": [
+        "falling",
+        "flying"
+      ]
+    },
+    {
       "image": "https://rickandmortyapi.com/api/character/avatar/43.jpeg",
       "correct": "Big Morty",
       "descriptionCorrect": "Such a weird Morty",
@@ -11,20 +21,29 @@
       ]
     },
     {
-      "image": "https://rickandmortyapi.com/api/character/avatar/117.jpeg",
-      "correct": "Clone",
-      "descriptionCorrect": "Actually, It is Evil Jerry Clone",
-      "question": "What is the type of this character?",
+      "image": "https://rickandmortyapi.com/api/character/avatar/673.jpeg",
+      "correct": "Narnia",
+      "descriptionCorrect": "Hoovy is from Narnia",
+      "question": "What dimension is he from?",
       "options": [
-        "Human",
-        "Clone",
-        "Male"
+        "Narnia",
+        "Paradise"
+      ]
+    },
+    {
+      "image": "https://rickandmortyapi.com/api/character/avatar/306.jpeg",
+      "correct": "No",
+      "descriptionCorrect": "His name is Scary Terry",
+      "question": "Is \"Scare Berry\" his name?",
+      "options": [
+        "No",
+        "Yes"
       ]
     },
     {
       "image": "https://rickandmortyapi.com/api/character/avatar/25.jpeg",
       "correct": "No",
-      "descriptionCorrect": "He died in Episode 2, Season 3",
+      "descriptionCorrect": "Armothy died in Episode 2, Season 3",
       "question": "Is alive this character?",
       "options": [
         "No",
@@ -52,13 +71,33 @@
       ]
     },
     {
-      "image": "https://rickandmortyapi.com/api/character/avatar/306.jpeg",
-      "correct": "No",
-      "descriptionCorrect": "His name is Scary Terry",
-      "question": "Is \"Scare Berry\" his name?",
+      "image": "https://rickandmortyapi.com/api/character/avatar/662.jpeg",
+      "correct": "Female",
+      "descriptionCorrect": "Gaia is a female planet, Rick knows...",
+      "question": "This planet, Male or Female?",
       "options": [
-        "No",
-        "Yes"
+        "Male",
+        "Female"
+      ]
+    },
+    {
+      "image": "https://rickandmortyapi.com/api/character/avatar/103.jpeg",
+      "correct": "Doofus",
+      "descriptionCorrect": "Ricks laughed at him, except Jerry",
+      "question": "... Rick?",
+      "options": [
+        "Doofus",
+        "Silly"
+      ]
+    },
+    {
+      "image": "https://rickandmortyapi.com/api/character/avatar/803.jpeg",
+      "correct": "40",
+      "descriptionCorrect": "He himself grew old out of envy",
+      "question": "How old is Morty in this episode?",
+      "options": [
+        "40",
+        "41"
       ]
     }
   ]

@@ -43,6 +43,9 @@ class MFProfilerViewModel @Inject constructor(
            onComplete.invoke((insertId != -1L))
         }
     }
+    fun clear(){
+        firstCharacters.value = Resource.Empty()
+    }
     companion object {
         const val TAG = "MFProfilerViewModel"
     }

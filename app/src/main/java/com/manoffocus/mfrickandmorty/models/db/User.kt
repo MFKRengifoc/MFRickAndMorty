@@ -12,7 +12,7 @@ data class User(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_id")
-    val userId : Int?,
+    val userId : Long?,
 
     @ColumnInfo(name = "name")
     val name : String,

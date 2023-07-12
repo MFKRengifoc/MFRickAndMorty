@@ -35,6 +35,7 @@ enum class MFTexTitleSizes(var size: TextUnit){
     SMALL(size = 15.sp);
 }
 enum class MFTexSizes(var size: TextUnit){
+    XLARGE(size = 28.sp),
     LARGE(size = 25.sp),
     MEDIUM(size = 20.sp),
     SMALL(size = 15.sp),

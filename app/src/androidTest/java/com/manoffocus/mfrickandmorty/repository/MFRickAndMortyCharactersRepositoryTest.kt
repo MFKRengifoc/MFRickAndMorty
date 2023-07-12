@@ -15,6 +15,7 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @HiltAndroidTest
 class MFRickAndMortyCharactersRepositoryTest {
@@ -27,6 +28,8 @@ class MFRickAndMortyCharactersRepositoryTest {
         .connectTimeout(BASIC_TIME_SECS, TimeUnit.SECONDS)
         .readTimeout(BASIC_TIME_SECS, TimeUnit.SECONDS)
         .build()
+    @Inject
+    lateinit var repository: MFRickAndMortyCharactersRepository
     @Before
     fun setup(){
         hiltAndroidRule.inject()
@@ -97,18 +100,11 @@ class MFRickAndMortyCharactersRepositoryTest {
     }
     @Test
     fun getCharacterByFields_OnlyStatus_ReturnNotFoundTest(){
-        val rf = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-        val api = rf.create(RickAndMortyAPI::class.java)
-        val mfRickAndMortyCharactersRepository = MFRickAndMortyCharactersRepository(api)
         runBlocking {
             val name = ""
             val status = "survived"
             val gender = ""
-            val req = mfRickAndMortyCharactersRepository.getCharacterByFields(
+            val req = repository.getCharacterByFields(
                 name = name,
                 status = status,
                 gender = gender
@@ -118,18 +114,11 @@ class MFRickAndMortyCharactersRepositoryTest {
     }
     @Test
     fun getCharacterByFields_OnlyGender_ReturnNotFoundTest(){
-        val rf = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-        val api = rf.create(RickAndMortyAPI::class.java)
-        val mfRickAndMortyCharactersRepository = MFRickAndMortyCharactersRepository(api)
         runBlocking {
             val name = ""
             val status = ""
             val gender = "helicopter"
-            val req = mfRickAndMortyCharactersRepository.getCharacterByFields(
+            val req = repository.getCharacterByFields(
                 name = name,
                 status = status,
                 gender = gender
@@ -139,18 +128,11 @@ class MFRickAndMortyCharactersRepositoryTest {
     }
     @Test
     fun getCharacterByFields_ReturnAllCharactersTest(){
-        val rf = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-        val api = rf.create(RickAndMortyAPI::class.java)
-        val mfRickAndMortyCharactersRepository = MFRickAndMortyCharactersRepository(api)
         runBlocking {
             val name = ""
             val status = ""
             val gender = ""
-            val req = mfRickAndMortyCharactersRepository.getCharacterByFields(
+            val req = repository.getCharacterByFields(
                 name = name,
                 status = status,
                 gender = gender
@@ -164,16 +146,9 @@ class MFRickAndMortyCharactersRepositoryTest {
     }
     @Test
     fun getCharactersByIdCodes_ReturnCharactersTest(){
-        val rf = Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-        val api = rf.create(RickAndMortyAPI::class.java)
-        val mfRickAndMortyCharactersRepository = MFRickAndMortyCharactersRepository(api)
         runBlocking {
             val ids = arrayOf(1,2,3)
-            val req = mfRickAndMortyCharactersRepository.getCharactersByIdCodes(ids)
+            val req = repository.getCharactersByIdCodes(ids)
             req.value.data?.let { data ->
                 val charactersReq = data.filterIndexed { index, mfCharacter ->
                     mfCharacter.id == ids[index]
