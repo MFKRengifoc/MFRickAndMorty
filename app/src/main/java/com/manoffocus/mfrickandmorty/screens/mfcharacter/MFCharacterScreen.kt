@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -52,14 +53,13 @@ import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
 @Composable
 fun MFCharacterScreen(
     navController: NavController,
-    mfCharacterViewModel: MFCharacterViewModel = hiltViewModel(),
+    mfCharacterViewModel: MFCharacterViewModel,
     characterId: MutableState<Int>,
     user: User?
 ) {
     val likedCharacter by mfCharacterViewModel.likedCharacter.collectAsState()
     val character = mfCharacterViewModel.character.value
     val episodes = mfCharacterViewModel.episodes.value
-
     LaunchedEffect(key1 = characterId.value){
         mfCharacterViewModel.getCharacterById(characterId.value)
         mfCharacterViewModel.getLikedCharacter(characterId = characterId.value)
@@ -183,6 +183,7 @@ fun MFCharacterScreen(
                         text = stringResource(id = R.string.mf_season_screen_appear_label),
                         align = TextAlign.Start
                     )
+                    Divider()
                     character?.let { char ->
                         val verticalModifier = Modifier
                             .fillMaxWidth()

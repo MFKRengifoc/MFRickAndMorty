@@ -57,7 +57,7 @@ fun MFFilterPicker(
                     MFChip(
                         label = options[index].value,
                         size = MFChipSize.XSMALL,
-                        color = if (selected.value != index) options[index].color.copy(alpha = 0.5F, blue = 0.4F) else options[index].color
+                        color = if (selected.value != index) options[index].color.copy(alpha = 0.4F, blue = 0.4F) else options[index].color
                     ){
                         if (selected.value == index){
                             selected.value = -1

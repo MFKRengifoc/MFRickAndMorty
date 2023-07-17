@@ -38,7 +38,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun MFSplashScreen(
     navController: NavController,
-    user: User?
+    user: User?,
 ) {
     Surface(
         modifier = Modifier

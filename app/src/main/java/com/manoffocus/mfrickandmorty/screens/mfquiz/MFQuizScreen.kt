@@ -1,5 +1,6 @@
 package com.manoffocus.mfrickandmorty.screens.mfquiz
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.manoffocus.mfrickandmorty.R
 import com.manoffocus.mfrickandmorty.components.mfbutton.MFButton
@@ -50,8 +50,9 @@ import java.util.Date
 @Composable
 fun MFQuizScreen(
     navController: NavController,
-    mfQuizViewModel: MFQuizViewModel = hiltViewModel(),
-    user: User?
+    mfQuizViewModel: MFQuizViewModel,
+    user: User?,
+    onBackClick: () -> Unit
 ) {
     val quiz = mfQuizViewModel.quiz.value
     val finishedQuiz = remember { mutableStateOf(false) }
@@ -60,6 +61,9 @@ fun MFQuizScreen(
     var timeStarted : Date? = null
     val leavingQuiz = remember { mutableStateOf(false) }
     val ctx = LocalContext.current
+    BackHandler {
+        leavingQuiz.value = true
+    }
     LaunchedEffect(Unit){
         mfQuizViewModel.getJsonDataFromAsset(ctx)
     }
@@ -73,66 +77,65 @@ fun MFQuizScreen(
                     if (preparedButtonClicked.value){
                         leavingQuiz.value = true
                     } else {
-                        navController.popBackStack()
+                        onBackClick.invoke()
                     }
                 }
             )
         }
     ) { it ->
-        if (leavingQuiz.value){
-            MFDialog(
-                title = stringResource(id = R.string.mf_quiz_screen_leave_quiz_title)
+        MFDialog(
+            title = stringResource(id = R.string.mf_quiz_screen_leave_quiz_title),
+            show = leavingQuiz
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = verticalPaddingBg),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Column(
+                val msg = stringResource(id = R.string.mf_quiz_screen_leave_quiz_ask)
+                val mutableMsg = remember {
+                    mutableStateOf(msg)
+                }
+                MFCharacterGuard(
+                    msg = mutableMsg,
+                    icon = R.drawable.mf_morty_icon,
+                    dialogSize = MFCharacterMsgSize.SMALL
+                )
+                MFText(
+                    modifier = Modifier.padding(top = topBottomPaddingBg),
+                    text = stringResource(id = R.string.mf_quiz_screen_leave_quiz_content),
+                    size = MFTexSizes.SMALL,
+                    color = MaterialTheme.colors.secondary
+                )
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = verticalPaddingBg),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                        .padding(vertical = verticalPaddingBg)
+                        .padding(vertical = verticalPaddingBg),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    val msg = stringResource(id = R.string.mf_quiz_screen_leave_quiz_ask)
-                    val mutableMsg = remember {
-                        mutableStateOf(msg)
-                    }
-                    MFCharacterGuard(
-                        msg = mutableMsg,
-                        icon = R.drawable.mf_morty_icon,
-                        dialogSize = MFCharacterMsgSize.SMALL
-                    )
-                    MFText(
-                        modifier = Modifier.padding(top = topBottomPaddingBg),
-                        text = stringResource(id = R.string.mf_quiz_screen_leave_quiz_content),
-                        size = MFTexSizes.SMALL,
-                        color = MaterialTheme.colors.secondary
-                    )
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = verticalPaddingBg)
-                            .padding(vertical = verticalPaddingBg),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround,
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround,
-                        ) {
-                            MFButton(
-                                modifier = Modifier
-                                    .width(MFButtonSize.SMALL.w),
-                                text = stringResource(id = R.string.mf_quiz_screen_confirm_dialog_label),
-                                size = MFButtonSize.SMALL,
-                                color = darkError
-                            ){
-                                navController.popBackStack()
-                            }
-                            MFButton(
-                                modifier = Modifier
-                                    .width(MFButtonSize.SMALL.w),
-                                text = stringResource(id = R.string.mf_quiz_screen_cancel_dialog_label),
-                                size = MFButtonSize.SMALL,
-                            ){
-                                leavingQuiz.value = false
-                            }
+                        MFButton(
+                            modifier = Modifier
+                                .width(MFButtonSize.SMALL.w),
+                            text = stringResource(id = R.string.mf_quiz_screen_confirm_dialog_label),
+                            size = MFButtonSize.SMALL,
+                            color = darkError
+                        ){
+                            onBackClick.invoke()
+                        }
+                        MFButton(
+                            modifier = Modifier
+                                .width(MFButtonSize.SMALL.w),
+                            text = stringResource(id = R.string.mf_quiz_screen_cancel_dialog_label),
+                            size = MFButtonSize.SMALL,
+                        ){
+                            leavingQuiz.value = false
                         }
                     }
                 }
@@ -176,12 +179,12 @@ fun MFQuizScreen(
                             }
                         }
                     } else {
-                      Column(
+                        Column(
                           modifier = Modifier
                               .fillMaxHeight(),
                           verticalArrangement = Arrangement.Center,
                           horizontalAlignment = Alignment.CenterHorizontally
-                      ) {
+                        ) {
                           quiz.questions?.let { questions ->
                               val testPassed = (correctQuestions.value >= questions.size / 2)
                               var lottie = R.raw.mf_morty_dancing_lottie
@@ -246,8 +249,7 @@ fun MFQuizScreen(
                                   navController.popBackStack()
                               }
                           }
-
-                      }
+                        }
                     }
                 }
             }

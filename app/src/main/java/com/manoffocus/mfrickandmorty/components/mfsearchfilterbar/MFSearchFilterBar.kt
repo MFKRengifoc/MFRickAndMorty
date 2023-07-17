@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,7 +63,7 @@ fun MFSearchFilterBar(
                 ),
                 MFFilterOption(
                     value = stringResource(id = R.string.mf_search_screen_unknown_filter_label),
-                    color = MaterialTheme.colors.primary
+                    color = mfSearchScreenMaleColor
                 )
             )
         ){

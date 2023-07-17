@@ -1,15 +1,14 @@
 package com.manoffocus.mfrickandmorty.screens.mfseason
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,12 +50,14 @@ fun MFSeasonScreen(
     mfSeasonViewModel: MFSeasonViewModel,
     connectedStatus: MutableState<Pair<String, Boolean>>,
     seasonCode: MutableState<String>,
-    user: User?
+    user: User?,
+    onBackClick: () -> Unit
 ) {
-    val episodesReq = mfSeasonViewModel.episodesReq.value
-    LaunchedEffect(key1 = seasonCode.value){
-        mfSeasonViewModel.getEpisodesBySeasonCode(seasonCode.value)
+    BackHandler {
+        onBackClick.invoke()
     }
+    val episodesReq = mfSeasonViewModel.episodesReq.value
+    val charactersPerEpisode = mfSeasonViewModel.charactersPerEpisode.value
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colors.background),
         topBar = {
@@ -64,8 +65,7 @@ fun MFSeasonScreen(
                 user = user,
                 actualScreen = MFScreens.MFSeasonScreen,
                 onBackClick = {
-                    mfSeasonViewModel.clear()
-                    navController.popBackStack()
+                    onBackClick.invoke()
                 }
             )
         },
@@ -116,6 +116,7 @@ fun MFSeasonScreen(
                             }
                         }
                     }
+                    Divider()
                     if (episodesReq is Resource.Loading || episodesReq is Resource.Empty){
                         MFLoadingPlaceHolder(
                             placeholder = R.raw.mf_placeholder_lottie,
@@ -133,34 +134,22 @@ fun MFSeasonScreen(
                                         MFEpisodeOverView(
                                             episode = episode
                                         ){
-                                            episode.charactersFull?.let { data ->
+                                            val characters = charactersPerEpisode.find { pair ->
+                                                pair.first == episode.id
+                                            }
+                                            characters?.let { chars ->
                                                 MFHorizontal(
                                                     modifier = Modifier,
-                                                    list = data
+                                                    list = chars.second
                                                 ) { character ->
-                                                    val character = character as MFCharacter
+                                                    val char = character as MFCharacter
                                                     MFCharacterAvatar(
                                                         modifier = Modifier.padding(horizontal = sidesPaddingBg),
-                                                        size = MFCharacterAvatarSize.SMALL,
-                                                        characterUrl = character.image,
-                                                        characterName = character.name
+                                                        characterUrl = char.image,
+                                                        characterName = char.name,
+                                                        size = MFCharacterAvatarSize.SMALL
                                                     ) {
-                                                        navController.navigate(MFScreens.MFCharacterScreen.name + "/${character.id}")
-                                                    }
-                                                }
-                                            } ?: run {
-                                                MFHorizontal(
-                                                    modifier = Modifier,
-                                                    list = episode.characters
-                                                ) { character ->
-                                                    Column(
-                                                        modifier = Modifier
-                                                            .size(MFCharacterAvatarSize.MEDIUM.size)
-                                                            .padding(start = sidesPaddingBg),
-                                                        verticalArrangement = Arrangement.Center,
-                                                        horizontalAlignment = Alignment.CenterHorizontally
-                                                    ) {
-                                                        MFLoadingPlaceHolder(placeholder = R.raw.mf_placeholder_avatar_lottie, size = MFLoadingPlaceHolderSize.XSMALL)
+                                                        navController.navigate(MFScreens.MFCharacterScreen.name + "/${char.id}")
                                                     }
                                                 }
                                             }

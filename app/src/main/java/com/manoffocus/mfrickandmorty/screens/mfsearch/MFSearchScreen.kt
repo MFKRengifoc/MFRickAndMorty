@@ -1,5 +1,6 @@
 package com.manoffocus.mfrickandmorty.screens.mfsearch
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,15 +34,18 @@ import com.manoffocus.mfrickandmorty.components.mftopbar.MFTopBar
 import com.manoffocus.mfrickandmorty.data.Resource
 import com.manoffocus.mfrickandmorty.navigation.MFScreens
 import com.manoffocus.mfrickandmorty.ui.theme.horizontalPaddingBg
+import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
 
 @Composable
 fun MFSearchScreen(
     navController: NavController,
     mfSearchViewModel: MFSearchViewModel,
-    connectedStatus: MutableState<Pair<String, Boolean>>
+    connectedStatus: MutableState<Pair<String, Boolean>>,
+    searchText: MutableState<String>,
+    onBackClick: () -> Unit
 ) {
-    val searchText = rememberSaveable {
-        mutableStateOf("")
+    BackHandler {
+        onBackClick.invoke()
     }
     val searches = mfSearchViewModel.searchList.value
     Scaffold(
@@ -62,8 +65,7 @@ fun MFSearchScreen(
                 },
                 searchText = searchText,
                 onBackClick = {
-                    mfSearchViewModel.clear()
-                    navController.popBackStack()
+                    onBackClick.invoke()
                 }
             )
         }
@@ -83,7 +85,7 @@ fun MFSearchScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (connectedStatus.value.second){
-                    MFSectionForVertical(modifier = rowMod) {
+                    MFSectionForVertical(modifier = rowMod.padding(vertical = verticalPaddingBg)) {
                         MFSearchFilterBar(
                             modifier = Modifier
                                 .fillMaxSize()

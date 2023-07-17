@@ -81,21 +81,6 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
-
-    // Hilt Testing
-    // For Robolectric tests.
-    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    // ...with Kotlin.
-    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-    // For instrumented tests.
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    // ...with Kotlin.
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-
-    testImplementation "androidx.arch.core:core-testing:$core_testing_version"
-    androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
-
-
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
@@ -119,5 +104,15 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
+
+    // ...with Kotlin.
+    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    // For instrumented tests.
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    // ...with Kotlin.
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
+    // Mockito
+    testImplementation "org.mockito:mockito-core:5.4.0"
 
 }

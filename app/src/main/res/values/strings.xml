@@ -139,7 +139,7 @@
     <string name="mf_quiz_screen_prepared_but">Prepared?</string>
     <string name="mf_quiz_screen_leave_quiz_ask">Oh…</string>
     <string name="mf_quiz_screen_leave_quiz_title">Want to leave?</string>
-    <string name="mf_quiz_screen_leave_quiz_content">You will lost your answers</string>
+    <string name="mf_quiz_screen_leave_quiz_content">Really want to go?</string>
     <string name="mf_quiz_screen_confirm_dialog_label">Yes, please</string>
     <string name="mf_quiz_screen_cancel_dialog_label">No way</string>
     <string name="mf_quiz_screen_choosing_answers_label">Your choice: %1$s</string>

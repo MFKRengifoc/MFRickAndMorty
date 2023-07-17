@@ -1,5 +1,6 @@
 package com.manoffocus.mfrickandmorty.screens.mfuserprofile
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,14 +16,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.manoffocus.mfrickandmorty.R
 import com.manoffocus.mfrickandmorty.components.mfcharactersgrid.MFCharacterAvatar
@@ -45,18 +44,17 @@ import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
 @Composable
 fun MFUserProfileScreen(
     navController: NavController,
-    mfUserProfileViewModel: MFUserProfileViewModel = hiltViewModel(),
-    user: User?
+    mfUserProfileViewModel: MFUserProfileViewModel,
+    user: User?,
+    onBackClick: () -> Unit
 ) {
+    BackHandler {
+        onBackClick.invoke()
+    }
     val finishedQuiz = mfUserProfileViewModel.finishedQuiz.value
     val likes = mfUserProfileViewModel.likes.value
     LaunchedEffect(Unit){
         mfUserProfileViewModel.getData()
-    }
-    DisposableEffect(Unit){
-        onDispose {
-            mfUserProfileViewModel.clear()
-        }
     }
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colors.background),
@@ -65,8 +63,7 @@ fun MFUserProfileScreen(
                 user = user,
                 actualScreen = MFScreens.MFUserProfileScreen,
                 onBackClick = {
-                    mfUserProfileViewModel.clear()
-                    navController.popBackStack()
+                    onBackClick.invoke()
                 }
             )
         }

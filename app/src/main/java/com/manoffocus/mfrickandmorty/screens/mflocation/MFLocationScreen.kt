@@ -1,14 +1,14 @@
 package com.manoffocus.mfrickandmorty.screens.mflocation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -26,13 +26,14 @@ import com.manoffocus.mfrickandmorty.components.mfchipicon.MFChipInfoIcon
 import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolder
 import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolderSize
 import com.manoffocus.mfrickandmorty.components.mfsection.MFSectionForVertical
+import com.manoffocus.mfrickandmorty.components.mfsurface.MFSurface
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTexSizes
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTextTitle
 import com.manoffocus.mfrickandmorty.components.mftopbar.MFTopBar
 import com.manoffocus.mfrickandmorty.data.Resource
 import com.manoffocus.mfrickandmorty.models.db.User
 import com.manoffocus.mfrickandmorty.navigation.MFScreens
-import com.manoffocus.mfrickandmorty.ui.theme.topBottomPaddingBg
+import com.manoffocus.mfrickandmorty.ui.theme.horizontalPaddingBg
 import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
 
 @Composable
@@ -40,9 +41,12 @@ fun MFLocationScreen(
     navController: NavController,
     mfLocationViewModel: MFLocationViewModel,
     connectedStatus: MutableState<Pair<String, Boolean>>,
-    locationId: MutableState<Int>,
-    user: User?
+    user: User?,
+    onBackClick: () -> Unit
 ) {
+    BackHandler {
+        onBackClick.invoke()
+    }
     val locationReq = mfLocationViewModel.locationReq.value
     val characters = mfLocationViewModel.characters.value
     val rowModifier = Modifier
@@ -56,25 +60,19 @@ fun MFLocationScreen(
                 user = user,
                 actualScreen = MFScreens.MFLocationScreen,
                 onBackClick = {
-                    mfLocationViewModel.clear()
-                    navController.popBackStack(MFScreens.MFHomeScreen.name, false)
+                    onBackClick.invoke()
                 }
             )
         }
     ) { it ->
-        Surface(
+        MFSurface(
             modifier = Modifier
-                .background(MaterialTheme.colors.background)
                 .padding(it)
-                .padding(start = topBottomPaddingBg)
-                .padding(vertical = verticalPaddingBg)
-                .fillMaxSize(),
-            color = MaterialTheme.colors.background
+                .padding(horizontal = horizontalPaddingBg)
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(),
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (connectedStatus.value.second){
@@ -115,10 +113,10 @@ fun MFLocationScreen(
                                     ){
                                         MFTextTitle(
                                             text = stringResource(
-                                                id = R.string.mf_location_screen_residents_number_label, data.residents.size),
-                                            underLine = true
+                                                id = R.string.mf_location_screen_residents_number_label, data.residents.size)
                                         )
                                     }
+                                    Divider()
                                 }
                             }
                         } else {
@@ -131,19 +129,19 @@ fun MFLocationScreen(
                             )
                         }
                     }
-                    if (locationReq is Resource.Loading){
-                        MFSectionForVertical(modifier = rowModifier) {
-                            MFTextTitle(text = stringResource(id = R.string.mf_location_screen_loading_number_label))
-                        }
-                    } else {
-                        if (locationReq is Resource.Success){
-                            characters.data?.let { charsData ->
-                                MFCharacterGrid(
-                                    modifier = Modifier,
-                                    listOfCharacters = charsData,
-                                    columns = 3
-                                ){ id, avatar ->
-                                    navController.navigate(MFScreens.MFCharacterScreen.name + "/${id}")
+                    MFSectionForVertical(modifier = rowModifier) {
+                        if (locationReq is Resource.Loading){
+                                MFTextTitle(text = stringResource(id = R.string.mf_location_screen_loading_number_label))
+                        } else {
+                            if (locationReq is Resource.Success){
+                                characters.data?.let { charsData ->
+                                    MFCharacterGrid(
+                                        modifier = Modifier,
+                                        listOfCharacters = charsData,
+                                        columns = 3
+                                    ){ id, avatar ->
+                                        navController.navigate(MFScreens.MFCharacterScreen.name + "/${id}")
+                                    }
                                 }
                             }
                         }

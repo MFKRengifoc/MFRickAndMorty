@@ -1,5 +1,6 @@
 package com.manoffocus.mfrickandmorty.screens.mfhome
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -51,13 +52,17 @@ fun MFHomeScreen(
     navController: NavController,
     mfHomeViewModel: MFHomeViewModel,
     connectedStatus: MutableState<Pair<String, Boolean>>,
-    user: User?
+    user: User?,
+    onBackClick: () -> Unit
 ) {
     val likes by mfHomeViewModel.likes
     val locationReq = mfHomeViewModel.locationReq.value
     val seasonReq = mfHomeViewModel.seasonReq.value
     val locations = mfHomeViewModel.locations.value
     val seasons by mfHomeViewModel.seasons
+    BackHandler {
+        onBackClick.invoke()
+    }
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colors.background),
         topBar = {
@@ -115,7 +120,7 @@ fun MFHomeScreen(
                             modifier = Modifier.padding(start = sidesPaddingBg),
                             text = stringResource(id = R.string.mf_home_screen_title_locations_label)
                         )
-                        if (locationReq is Resource.Loading){
+                        if (locationReq is Resource.Loading || locationReq is Resource.Empty){
                             MFLoadingPlaceHolder(
                                 placeholder = R.raw.mf_loading_planets_lottie,
                                 size = MFLoadingPlaceHolderSize.SMALL
@@ -148,7 +153,7 @@ fun MFHomeScreen(
                             modifier = Modifier.padding(start = sidesPaddingBg),
                             text = stringResource(id = R.string.mf_home_screen_title_seasons_label)
                         )
-                        if (seasonReq is Resource.Loading){
+                        if (seasonReq is Resource.Loading || locationReq is Resource.Empty){
                             MFLoadingPlaceHolder(
                                 placeholder = R.raw.mf_placeholder_lottie,
                                 speed = 0.8F,

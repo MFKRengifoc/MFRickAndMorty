@@ -1,8 +1,10 @@
 package com.manoffocus.mfrickandmorty.viewmodel
 
+import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.manoffocus.mfrickandmorty.dao.MFRickAndMortyDao
 import com.manoffocus.mfrickandmorty.dao.MFRickAndMortyDatabase
+import com.manoffocus.mfrickandmorty.data.Resource
+import com.manoffocus.mfrickandmorty.models.locations.LocationsRequest
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyEpisodesRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyLocationsRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyRepositoryDatabase
@@ -10,9 +12,11 @@ import com.manoffocus.mfrickandmorty.screens.mfhome.MFHomeViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.`when`
 import javax.inject.Inject
 
 @HiltAndroidTest
@@ -24,7 +28,6 @@ class MFHomeViewModelTest {
     val hiltAndroidRule = HiltAndroidRule(this)
     @Inject
     lateinit var rickAndMortyDatabase: MFRickAndMortyDatabase
-    private lateinit var rickAndMortyDao: MFRickAndMortyDao
 
     @Inject
     lateinit var mfRickAndMortyRepositoryDatabase: MFRickAndMortyRepositoryDatabase
@@ -38,8 +41,6 @@ class MFHomeViewModelTest {
     @Before
     fun setup(){
         hiltAndroidRule.inject()
-        rickAndMortyDao = rickAndMortyDatabase.rickAndMortyDao()
-        mfRickAndMortyRepositoryDatabase = MFRickAndMortyRepositoryDatabase(rickAndMortyDao)
         mfHomeViewModel = MFHomeViewModel(
             mfRickAndMortyRepositoryDatabase,
             mfRickAndMortyEpisodesRepository,
@@ -48,10 +49,13 @@ class MFHomeViewModelTest {
     }
 
     @Test
-    fun getLocationsByPageCode_ValueRequestTest(){
-        runBlocking {
-            val locations = mfHomeViewModel.locations.value
-            mfHomeViewModel.getLocationsByPageCode(1)
-        }
+    fun getLocationsByPageCode_ValueRequestTest() = runTest {
+        val locations = mfHomeViewModel.locationReq.value
+        `when`(locations).thenReturn(Resource.Success(data = LocationsRequest()))
+        mfHomeViewModel.getLocationsByPageCode(1)
+        Log.d(TAG, "getLocationsByPageCode_ValueRequestTest: ${locations.data}")
+    }
+    companion object {
+        const val TAG = "MFHomeViewModelTest"
     }
 }

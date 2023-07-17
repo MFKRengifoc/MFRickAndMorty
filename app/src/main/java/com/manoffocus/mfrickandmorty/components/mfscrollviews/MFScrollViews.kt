@@ -36,7 +36,7 @@ fun MFVertical(
     LazyColumn(
         modifier = modifier.background(MaterialTheme.colors.background),
         contentPadding = PaddingValues(vertical = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         items(list){ item ->
             content(item)

@@ -2,21 +2,21 @@ package com.manoffocus.mfrickandmorty.components.mfepisodes
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.manoffocus.mfrickandmorty.R
 import com.manoffocus.mfrickandmorty.components.mfscrollviews.MFVertical
+import com.manoffocus.mfrickandmorty.components.mfsection.MFSectionForVertical
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTexTitleSizes
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTextTitle
 import com.manoffocus.mfrickandmorty.models.episodes.MFEpisode
@@ -55,7 +55,7 @@ fun MFEpisodeOverView(
         Column(
             modifier = modifier
         ) {
-            Row(
+            MFSectionForVertical(
                 modifier = modifier
                     .fillMaxHeight(0.4F)
                     .fillMaxWidth()
@@ -83,21 +83,18 @@ fun MFEpisodeOverView(
                     )
                 }
             }
-            Row(
-                modifier = modifier
+            MFSectionForVertical(
+                modifier = modifier,
+                horizontalAlignmentC = Alignment.Start
             ) {
-                Column(
-                    modifier = modifier.fillMaxSize()
-                ) {
-                    MFTextTitle(
-                        modifier = Modifier
-                            .padding(horizontal = mfTextSidesPadding)
-                            .padding(bottom = mfTextTopBottomPadding),
-                        text = stringResource(id = R.string.mf_season_screen_starring_label),
-                        size = MFTexTitleSizes.MEDIUM
-                    )
-                    contentCharacterRow()
-                }
+                MFTextTitle(
+                    modifier = Modifier
+                        .padding(horizontal = mfTextSidesPadding)
+                        .padding(bottom = mfTextTopBottomPadding),
+                    text = stringResource(id = R.string.mf_season_screen_starring_label),
+                    size = MFTexTitleSizes.MEDIUM
+                )
+                contentCharacterRow()
             }
         }
     }

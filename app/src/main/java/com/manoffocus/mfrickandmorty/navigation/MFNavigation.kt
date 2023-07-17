@@ -5,7 +5,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -16,6 +15,7 @@ import androidx.navigation.navArgument
 import com.manoffocus.mfrickandmorty.activities.mainactivity.MainViewModel
 import com.manoffocus.mfrickandmorty.data.ResourceUser
 import com.manoffocus.mfrickandmorty.screens.mfcharacter.MFCharacterScreen
+import com.manoffocus.mfrickandmorty.screens.mfcharacter.MFCharacterViewModel
 import com.manoffocus.mfrickandmorty.screens.mffaninfo.MFFanInfoScreen
 import com.manoffocus.mfrickandmorty.screens.mfhome.MFHomeScreen
 import com.manoffocus.mfrickandmorty.screens.mfhome.MFHomeViewModel
@@ -23,26 +23,44 @@ import com.manoffocus.mfrickandmorty.screens.mflocation.MFLocationScreen
 import com.manoffocus.mfrickandmorty.screens.mflocation.MFLocationViewModel
 import com.manoffocus.mfrickandmorty.screens.mfprofiler.MFProfilerScreen
 import com.manoffocus.mfrickandmorty.screens.mfquiz.MFQuizScreen
+import com.manoffocus.mfrickandmorty.screens.mfquiz.MFQuizViewModel
 import com.manoffocus.mfrickandmorty.screens.mfsearch.MFSearchScreen
 import com.manoffocus.mfrickandmorty.screens.mfsearch.MFSearchViewModel
 import com.manoffocus.mfrickandmorty.screens.mfseason.MFSeasonScreen
 import com.manoffocus.mfrickandmorty.screens.mfseason.MFSeasonViewModel
 import com.manoffocus.mfrickandmorty.screens.mfsplash.MFSplashScreen
 import com.manoffocus.mfrickandmorty.screens.mfuserprofile.MFUserProfileScreen
+import com.manoffocus.mfrickandmorty.screens.mfuserprofile.MFUserProfileViewModel
 
 @Composable
 fun MFNavigation(
-    viewModel: MainViewModel,
-    networkStatus: MutableState<Pair<String, Boolean>>,
     navController: NavHostController,
+    viewModel: MainViewModel,
+    mfHomeViewModel: MFHomeViewModel,
+    mfCharacterViewModel: MFCharacterViewModel,
+    mfLocationViewModel: MFLocationViewModel,
+    mfSeasonViewModel: MFSeasonViewModel,
+    mfSearchViewModel: MFSearchViewModel,
+    mfUserProfileViewModel: MFUserProfileViewModel,
+    mfQuizViewModel: MFQuizViewModel,
+    requestingBackScreen: MutableState<String>,
 ) {
+    val TAG = "MFNavigation"
+    val networkStatus = viewModel.networkStatus
     val user by viewModel.user
-    val mfHomeViewModel : MFHomeViewModel = hiltViewModel()
-    val mfLocationViewModel : MFLocationViewModel = hiltViewModel()
-    val mfSeasonViewModel: MFSeasonViewModel = hiltViewModel()
-    val mfSearchViewModel: MFSearchViewModel = hiltViewModel()
-    LaunchedEffect(networkStatus.value){
-        mfHomeViewModel.getData()
+    val idLocation = rememberSaveable { mutableStateOf(-1) }
+    val seasonCode = rememberSaveable { mutableStateOf("") }
+    val characterId = rememberSaveable { mutableStateOf(-1) }
+    val searchText = rememberSaveable { mutableStateOf("") }
+    LaunchedEffect(key1 = idLocation.value){
+        if (idLocation.value != -1){
+            mfLocationViewModel.getLocationById(idLocation.value)
+        }
+    }
+    LaunchedEffect(key1 = seasonCode.value){
+        if (seasonCode.value != ""){
+            mfSeasonViewModel.getEpisodesBySeasonCode(seasonCode.value)
+        }
     }
     NavHost(navController = navController, startDestination = MFScreens.MFSplashScreen.name){
         composable(MFScreens.MFSplashScreen.name){
@@ -70,40 +88,43 @@ fun MFNavigation(
                 mfHomeViewModel = mfHomeViewModel,
                 connectedStatus = networkStatus,
                 user = user.data
-            )
+            ){
+                requestingBackScreen.value = MFScreens.MFHomeScreen.name
+            }
         }
         val mfLocationScreen = MFScreens.MFLocationScreen.name
         composable(route = "$mfLocationScreen/{idLocation}", arguments = listOf(navArgument(name = "idLocation"){
             type = NavType.IntType
         }) ){ entry ->
-            val id = rememberSaveable { mutableStateOf(-1) }
             entry.arguments?.getInt("idLocation")?.let { args ->
-                id.value = args
+                idLocation.value = args
             }
-            LaunchedEffect(key1 = id.value){
-                mfLocationViewModel.getLocationById(id.value)
-            }
-            if (id.value != -1){
+            if (idLocation.value != -1){
                 MFLocationScreen(
                     navController = navController,
                     connectedStatus = networkStatus,
                     mfLocationViewModel = mfLocationViewModel,
-                    locationId = id,
                     user = user.data
-                )
+                ){
+                    requestingBackScreen.value = MFScreens.MFLocationScreen.name
+                    navController.popBackStack()
+                }
             }
         }
         composable(MFScreens.MFUserProfileScreen.name){
             MFUserProfileScreen(
                 navController = navController,
+                mfUserProfileViewModel = mfUserProfileViewModel,
                 user = user.data
-            )
+            ){
+                requestingBackScreen.value = MFScreens.MFUserProfileScreen.name
+                navController.popBackStack()
+            }
         }
         val mfSeasonScreen = MFScreens.MFSeasonScreen.name
         composable(route = "$mfSeasonScreen/{seasonCode}", arguments = listOf(navArgument(name = "seasonCode"){
             type = NavType.StringType
         })){ entry ->
-            val seasonCode = remember { mutableStateOf("") }
             entry.arguments?.getString("seasonCode")?.let { args ->
                 seasonCode.value = args
             }
@@ -114,20 +135,23 @@ fun MFNavigation(
                     connectedStatus = networkStatus,
                     seasonCode = seasonCode,
                     user = user.data
-                )
+                ){
+                    requestingBackScreen.value = MFScreens.MFSeasonScreen.name
+                    navController.popBackStack()
+                }
             }
         }
         val mfCharacterScreen = MFScreens.MFCharacterScreen.name
         composable(route = "$mfCharacterScreen/{characterId}", arguments = listOf(navArgument(name = "characterId"){
             type = NavType.IntType
         })){ entry ->
-            val characterId = remember { mutableStateOf(-1) }
             entry.arguments?.getInt("characterId")?.let { args ->
                 characterId.value = args
             }
             if (characterId.value != -1){
-                MFCharacterScreen(
+                MFCharacterScreen (
                     navController = navController,
+                    mfCharacterViewModel = mfCharacterViewModel,
                     user = user.data,
                     characterId = characterId
                 )
@@ -137,14 +161,22 @@ fun MFNavigation(
             MFSearchScreen(
                 navController = navController,
                 mfSearchViewModel = mfSearchViewModel,
-                connectedStatus = networkStatus
-            )
+                connectedStatus = networkStatus,
+                searchText = searchText
+            ){
+                requestingBackScreen.value = MFScreens.MFSearchScreen.name
+                navController.popBackStack()
+            }
         }
         composable(MFScreens.MFQuizScreen.name){
-            MFQuizScreen(
+            MFQuizScreen (
                 navController = navController,
+                mfQuizViewModel = mfQuizViewModel,
                 user = user.data
-            )
+            ){
+                requestingBackScreen.value = MFScreens.MFQuizScreen.name
+                navController.popBackStack()
+            }
         }
     }
 }

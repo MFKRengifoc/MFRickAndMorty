@@ -231,7 +231,8 @@ fun MFCharacterFoundInfo(
                 ) {
                     MFTextTitle(
                         text = stringResource(id = R.string.mf_character_found_origin_label),
-                        size = MFTexTitleSizes.SMALL
+                        size = MFTexTitleSizes.SMALL,
+                        underLine = true
                     )
                     MFText(
                         text = character.origin.name,
