@@ -21,13 +21,9 @@ class MFRickAndMortyCharactersRepository @Inject constructor(private val api: Ri
      * */
     private suspend fun apiGetCharactersById(ids: Array<Int>): Resource<List<MFCharacter>> {
         return try {
-            Resource.Loading(data = true)
             val idsStr = ids.contentToString()
             val characterRequest = api.getCharactersByIds(idsStr)
-            characterRequest.let { request ->
-                Resource.Loading(data = false)
-            }
-            Resource.Success(characterRequest)
+            Resource.Success(data = characterRequest, code = RepositoryExceptionCodes.SUCCESS)
         } catch (socketException: SocketTimeoutException){
             Resource.Error(message = socketException.message.toString(), code = RepositoryExceptionCodes.SOCKET_TIMEOUT_EXCEPTION)
         } catch (timeOutException: TimeoutException){
@@ -50,12 +46,8 @@ class MFRickAndMortyCharactersRepository @Inject constructor(private val api: Ri
      * */
     private suspend fun getCharacterById(id: Int): Resource<MFCharacter> {
         return try {
-            Resource.Loading(data = true)
             val characterRequest = api.getCharacterById(id)
-            characterRequest.let { request ->
-                Resource.Loading(data = false)
-            }
-            Resource.Success(characterRequest)
+            Resource.Success(data = characterRequest, code = RepositoryExceptionCodes.SUCCESS)
         } catch (socketException: SocketTimeoutException){
             Resource.Error(message = socketException.message.toString(), code = RepositoryExceptionCodes.SOCKET_TIMEOUT_EXCEPTION)
         } catch (timeOutException: TimeoutException){
@@ -80,12 +72,8 @@ class MFRickAndMortyCharactersRepository @Inject constructor(private val api: Ri
      * */
     private suspend fun getCharacterBy(name: String, status: String, gender: String): Resource<CharacterRequest> {
         return try {
-            Resource.Loading(data = true)
             val characterRequest = api.getCharacterBy(name = name, status = status, gender = gender)
-            characterRequest.let { request ->
-                Resource.Loading(data = false)
-            }
-            Resource.Success(characterRequest)
+            Resource.Success(data = characterRequest, code = RepositoryExceptionCodes.SUCCESS)
         } catch (socketException: SocketTimeoutException){
             Resource.Error(message = socketException.message.toString(), code = RepositoryExceptionCodes.SOCKET_TIMEOUT_EXCEPTION)
         } catch (timeOutException: TimeoutException){
@@ -111,7 +99,7 @@ class MFRickAndMortyCharactersRepository @Inject constructor(private val api: Ri
     suspend fun getCharacterByFields(name: String, status: String, gender: String): MutableStateFlow<Resource<CharacterRequest>> {
         val characters = MutableStateFlow<Resource<CharacterRequest>>(Resource.Empty())
         try {
-            characters.emit(Resource.Loading(loading = true))
+            characters.emit(Resource.Loading())
             when(val response = getCharacterBy(name = name, status = status, gender = gender)){
                 is Resource.Error -> {
                     response.message?.let { msg ->

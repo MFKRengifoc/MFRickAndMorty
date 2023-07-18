@@ -19,7 +19,7 @@ class MFSearchViewModel @Inject constructor(
     val searchList : MutableState<Resource<CharacterRequest>> = mutableStateOf(Resource.Empty())
     fun getCharactersBy(name: String, status: String, gender: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            searchList.value = Resource.Loading(loading = true)
+            searchList.value = Resource.Loading()
             charactersRepository.getCharacterByFields(name = name, status = status, gender = gender).collect { res ->
                 searchList.value = res
             }

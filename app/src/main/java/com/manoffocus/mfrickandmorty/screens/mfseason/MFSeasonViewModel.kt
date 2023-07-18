@@ -25,7 +25,7 @@ class MFSeasonViewModel @Inject constructor(
 
     fun getEpisodesBySeasonCode(code: String){
         viewModelScope.launch(Dispatchers.IO) {
-            episodesReq.value = Resource.Loading(loading = true)
+            episodesReq.value = Resource.Loading()
             episodesRepository.getEpisodesBySeasonCode(code).collect { res ->
                 episodesReq.value = res
                 loadCharacters()

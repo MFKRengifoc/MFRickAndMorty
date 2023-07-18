@@ -24,7 +24,7 @@ class MFLocationViewModel @Inject constructor(
     val characters : MutableState<Resource<List<MFCharacter>>> = mutableStateOf(Resource.Empty())
     fun getLocationById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            locationReq.value = Resource.Loading(loading = true)
+            locationReq.value = Resource.Loading()
             mfRickAndMortyLocationsRepository.getLocationByIdCode(id).collect { resQ ->
                 resQ.data?.apply {
                     locationReq.value = resQ

@@ -1,7 +1,6 @@
 package com.manoffocus.mfrickandmorty.screens.mfhome
 
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,9 +35,9 @@ class MFHomeViewModel @Inject constructor(
             rickAndMortyRepositoryDatabase.getAllLikes()
         }
     }
-    fun getSeasonsByFirstEpisodeCode(code: String){
+    private fun getSeasonsByFirstEpisodeCode(code: String){
         viewModelScope.launch(Dispatchers.IO) {
-            seasonReq.value = Resource.Loading(loading = true)
+            seasonReq.value = Resource.Loading()
             episodesRepository.getEpisodesBySeasonCode(code).collect { res ->
                 seasonReq.value = res
                 seasonReq.value.data?.let { data ->
@@ -51,7 +50,7 @@ class MFHomeViewModel @Inject constructor(
     }
     fun getLocationsByPageCode(page: Int){
         viewModelScope.launch(Dispatchers.IO) {
-            locationReq.value = Resource.Loading(loading = true)
+            locationReq.value = Resource.Loading()
             locationsRepository.getLocationsByPageNumber(page).collect { res ->
                 locationReq.value = res
                 locationReq.value.data?.let { data ->

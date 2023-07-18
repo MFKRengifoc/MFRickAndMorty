@@ -23,7 +23,7 @@ class MFRickAndMortyLocationsRepository @Inject constructor(private val api: Ric
     private suspend fun apiGetLocationById(id: Int): Resource<MFLocation> {
         return try {
             val locationRequest = api.getLocationById(id)
-            Resource.Success(locationRequest)
+            Resource.Success(data = locationRequest, code = RepositoryExceptionCodes.SUCCESS)
         } catch (socketException: SocketTimeoutException){
             Resource.Error(message = socketException.message.toString(), code = RepositoryExceptionCodes.SOCKET_TIMEOUT_EXCEPTION)
         } catch (timeOutException: TimeoutException){
@@ -47,7 +47,7 @@ class MFRickAndMortyLocationsRepository @Inject constructor(private val api: Ric
     suspend fun apiGetLocationsByPage(page: Int): Resource<LocationsRequest> {
         return try {
             val locationRequest = api.getLocationsByPage(page)
-            Resource.Success(data = locationRequest)
+            Resource.Success(data = locationRequest, code = RepositoryExceptionCodes.SUCCESS)
         } catch (socketException: SocketTimeoutException){
             Resource.Error(message = socketException.message.toString(), code = RepositoryExceptionCodes.SOCKET_TIMEOUT_EXCEPTION)
         } catch (timeOutException: TimeoutException){
@@ -71,7 +71,7 @@ class MFRickAndMortyLocationsRepository @Inject constructor(private val api: Ric
     suspend fun getLocationByIdCode(id: Int): StateFlow<Resource<MFLocation>>{
         val location = MutableStateFlow<Resource<MFLocation>>(Resource.Empty())
         try {
-            location.value = Resource.Loading(loading = true)
+            location.emit(Resource.Loading())
             when(val response = apiGetLocationById(id)){
                 is Resource.Error -> {
                     response.message?.let { msg ->
@@ -96,7 +96,7 @@ class MFRickAndMortyLocationsRepository @Inject constructor(private val api: Ric
     suspend fun getLocationsByPageNumber(page: Int): MutableStateFlow<Resource<LocationsRequest>>{
         val locationReq = MutableStateFlow<Resource<LocationsRequest>>(Resource.Empty())
         try {
-            locationReq.emit(Resource.Loading(loading = true))
+            locationReq.emit(Resource.Loading())
             when(val response = apiGetLocationsByPage(page)){
                 is Resource.Error -> {
                     response.message?.let {msg ->

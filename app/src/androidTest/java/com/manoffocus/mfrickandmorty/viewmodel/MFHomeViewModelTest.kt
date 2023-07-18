@@ -11,7 +11,6 @@ import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyRepositoryDatabase
 import com.manoffocus.mfrickandmorty.screens.mfhome.MFHomeViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -51,7 +50,6 @@ class MFHomeViewModelTest {
     @Test
     fun getLocationsByPageCode_ValueRequestTest() = runTest {
         val locations = mfHomeViewModel.locationReq.value
-        `when`(locations).thenReturn(Resource.Success(data = LocationsRequest()))
         mfHomeViewModel.getLocationsByPageCode(1)
         Log.d(TAG, "getLocationsByPageCode_ValueRequestTest: ${locations.data}")
     }

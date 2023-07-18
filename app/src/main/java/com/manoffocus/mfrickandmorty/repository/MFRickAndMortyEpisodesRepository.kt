@@ -21,12 +21,8 @@ class MFRickAndMortyEpisodesRepository @Inject constructor(private val api: Rick
      * */
     private suspend fun getEpisodesByCode(code: String): Resource<EpisodesRequest> {
         return try {
-            Resource.Loading(data = true)
             val locationRequest = api.getEpisodesByCode(code)
-            locationRequest.let { request ->
-                Resource.Loading(data = false)
-            }
-            Resource.Success(locationRequest)
+            Resource.Success(data = locationRequest, code = RepositoryExceptionCodes.SUCCESS)
         } catch (socketException: SocketTimeoutException){
             Resource.Error(message = socketException.message.toString(), code = RepositoryExceptionCodes.SOCKET_TIMEOUT_EXCEPTION)
         } catch (timeOutException: TimeoutException){
@@ -50,13 +46,9 @@ class MFRickAndMortyEpisodesRepository @Inject constructor(private val api: Rick
      * */
     suspend fun getEpisodesByIds(ids: Array<Int>): Resource<List<MFEpisode>> {
         return try {
-            Resource.Loading(data = true)
             val idsStr = ids.contentToString()
             val locationRequest = api.getEpisodesByIds(idsStr)
-            locationRequest.let { request ->
-                Resource.Loading(data = false)
-            }
-            Resource.Success(locationRequest)
+            Resource.Success(data = locationRequest, code = RepositoryExceptionCodes.SUCCESS)
         } catch (socketException: SocketTimeoutException){
             Resource.Error(message = socketException.message.toString(), code = RepositoryExceptionCodes.SOCKET_TIMEOUT_EXCEPTION)
         } catch (timeOutException: TimeoutException){
@@ -80,7 +72,7 @@ class MFRickAndMortyEpisodesRepository @Inject constructor(private val api: Rick
     suspend fun getEpisodesBySeasonCode(code: String): MutableStateFlow<Resource<EpisodesRequest>> {
         val episodesRequest = MutableStateFlow<Resource<EpisodesRequest>>(Resource.Empty())
         try {
-            episodesRequest.emit(Resource.Loading(loading = true))
+            episodesRequest.emit(Resource.Loading())
             when(val response = getEpisodesByCode(code = code)){
                 is Resource.Error -> {
                     response.message?.let {msg ->
