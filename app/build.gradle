@@ -103,16 +103,4 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-
-
-    // ...with Kotlin.
-    kaptTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-    // For instrumented tests.
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    // ...with Kotlin.
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-    androidTestImplementation "androidx.arch.core:core-testing:$core_testing_version"
-    // Mockito
-    testImplementation "org.mockito:mockito-core:5.4.0"
-
 }
