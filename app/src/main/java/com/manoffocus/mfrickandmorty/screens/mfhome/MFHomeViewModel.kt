@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manoffocus.mfrickandmorty.data.Resource
+import com.manoffocus.mfrickandmorty.di.IoDispatcher
 import com.manoffocus.mfrickandmorty.models.db.CharacterLike
 import com.manoffocus.mfrickandmorty.models.episodes.EpisodesRequest
 import com.manoffocus.mfrickandmorty.models.episodes.MFEpisode
@@ -14,7 +15,7 @@ import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyEpisodesRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyLocationsRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyRepositoryDatabase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +24,7 @@ class MFHomeViewModel @Inject constructor(
     private val rickAndMortyRepositoryDatabase: MFRickAndMortyRepositoryDatabase,
     private val episodesRepository: MFRickAndMortyEpisodesRepository,
     private val locationsRepository: MFRickAndMortyLocationsRepository,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
     ): ViewModel() {
     val likes : MutableState<List<CharacterLike>> = mutableStateOf(emptyList())
     val locationReq : MutableState<Resource<LocationsRequest>> = mutableStateOf(Resource.Empty())
@@ -31,12 +33,12 @@ class MFHomeViewModel @Inject constructor(
     val seasons : MutableState<List<MFEpisode>> = mutableStateOf(emptyList())
 
     private fun getLikes(){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             rickAndMortyRepositoryDatabase.getAllLikes()
         }
     }
-    private fun getSeasonsByFirstEpisodeCode(code: String){
-        viewModelScope.launch(Dispatchers.IO) {
+    fun getSeasonsByFirstEpisodeCode(code: String){
+        viewModelScope.launch(ioDispatcher) {
             seasonReq.value = Resource.Loading()
             episodesRepository.getEpisodesBySeasonCode(code).collect { res ->
                 seasonReq.value = res
@@ -48,13 +50,13 @@ class MFHomeViewModel @Inject constructor(
             }
         }
     }
-    fun getLocationsByPageCode(page: Int){
-        viewModelScope.launch(Dispatchers.IO) {
+    suspend fun getLocationsByPageCode(page: Int){
+        viewModelScope.launch(ioDispatcher) {
             locationReq.value = Resource.Loading()
             locationsRepository.getLocationsByPageNumber(page).collect { res ->
                 locationReq.value = res
                 locationReq.value.data?.let { data ->
-                    data.results?.let { res ->
+                    data.results.let { res ->
                         locations.value = res
                     }
                 }
@@ -68,7 +70,7 @@ class MFHomeViewModel @Inject constructor(
             }
         }
     }
-    fun getData(){
+    suspend fun getData(){
         collectLikes()
         getLikes()
         getLocationsByPageCode(1)
