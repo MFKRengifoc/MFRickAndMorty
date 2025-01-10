@@ -19,6 +19,6 @@ local.properties
 /.idea/other.xml
 /.idea/render.experimental.xml
 *androidTestResultsUserPreferences.xml
-*gradle.xml
+/.idea/gradle.xml
 *misc.xml
 *Project_Default.xml
