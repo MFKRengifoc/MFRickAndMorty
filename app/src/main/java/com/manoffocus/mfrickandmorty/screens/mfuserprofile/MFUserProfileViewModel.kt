@@ -7,14 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.manoffocus.mfrickandmorty.models.db.CharacterLike
 import com.manoffocus.mfrickandmorty.models.db.Quiz
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyRepositoryDatabase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
-import javax.inject.Inject
 
-@HiltViewModel
-class MFUserProfileViewModel @Inject constructor(
+class MFUserProfileViewModel(
     private val mfRickAndMortyRepositoryDatabase: MFRickAndMortyRepositoryDatabase
 ): ViewModel() {
     val likes : MutableState<List<CharacterLike>> = mutableStateOf(emptyList())

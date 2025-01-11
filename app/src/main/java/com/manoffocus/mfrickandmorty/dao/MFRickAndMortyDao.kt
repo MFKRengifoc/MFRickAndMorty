@@ -1,6 +1,10 @@
 package com.manoffocus.mfrickandmorty.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.manoffocus.mfrickandmorty.models.db.CharacterLike
 import com.manoffocus.mfrickandmorty.models.db.Quiz
 import com.manoffocus.mfrickandmorty.models.db.User

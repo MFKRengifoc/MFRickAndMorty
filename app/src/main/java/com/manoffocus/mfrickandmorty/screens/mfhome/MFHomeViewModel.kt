@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manoffocus.mfrickandmorty.data.Resource
-import com.manoffocus.mfrickandmorty.di.IoDispatcher
 import com.manoffocus.mfrickandmorty.models.db.CharacterLike
 import com.manoffocus.mfrickandmorty.models.episodes.EpisodesRequest
 import com.manoffocus.mfrickandmorty.models.episodes.MFEpisode
@@ -14,18 +13,15 @@ import com.manoffocus.mfrickandmorty.models.locations.MFLocation
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyEpisodesRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyLocationsRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyRepositoryDatabase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MFHomeViewModel @Inject constructor(
+class MFHomeViewModel(
     private val rickAndMortyRepositoryDatabase: MFRickAndMortyRepositoryDatabase,
     private val episodesRepository: MFRickAndMortyEpisodesRepository,
     private val locationsRepository: MFRickAndMortyLocationsRepository,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
-    ): ViewModel() {
+    private val ioDispatcher: CoroutineDispatcher
+): ViewModel() {
     val likes : MutableState<List<CharacterLike>> = mutableStateOf(emptyList())
     val locationReq : MutableState<Resource<LocationsRequest>> = mutableStateOf(Resource.Empty())
     var locations : MutableState<List<MFLocation>> = mutableStateOf(emptyList())

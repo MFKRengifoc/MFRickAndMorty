@@ -12,9 +12,8 @@ import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
-import javax.inject.Inject
 
-class MFRickAndMortyLocationsRepository @Inject constructor(private val api: RickAndMortyAPI) {
+class MFRickAndMortyLocationsRepository (private val api: RickAndMortyAPI) {
     /**
      * Returns a [MFLocation] on a [Resource] object
      * Must be used to connect with API

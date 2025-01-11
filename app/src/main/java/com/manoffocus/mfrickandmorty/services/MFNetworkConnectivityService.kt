@@ -12,16 +12,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 interface NetworkConnectivityService {
     val networkStatus: Flow<NetworkStatus>
 }
 
-
-class MFNetworkConnectivityService @Inject constructor (
-    context: Context
-): NetworkConnectivityService  {
+class MFNetworkConnectivityService(context: Context): NetworkConnectivityService  {
 
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 

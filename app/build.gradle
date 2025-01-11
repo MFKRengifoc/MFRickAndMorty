@@ -2,17 +2,16 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
 }
 
 android {
     namespace 'com.manoffocus.mfrickandmorty'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.manoffocus.mfrickandmorty"
         minSdk 24
-        targetSdk 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -75,11 +74,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$view_model_version"
     implementation "androidx.lifecycle:lifecycle-runtime:$view_model_version"
 
-    // Hilt-Dagger
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-    kapt "androidx.hilt:hilt-compiler:1.0.0"
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+    // Koin
+    implementation("io.insert-koin:koin-android:3.5.6")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.6")
+    implementation("io.insert-koin:koin-androidx-navigation:3.5.6")
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
@@ -103,4 +101,5 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+
 }

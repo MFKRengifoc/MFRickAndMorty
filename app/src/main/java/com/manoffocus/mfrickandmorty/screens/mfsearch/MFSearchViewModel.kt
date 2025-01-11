@@ -7,13 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.manoffocus.mfrickandmorty.data.Resource
 import com.manoffocus.mfrickandmorty.models.characters.CharacterRequest
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyCharactersRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MFSearchViewModel @Inject constructor(
+class MFSearchViewModel(
     private val charactersRepository: MFRickAndMortyCharactersRepository,
 ) : ViewModel(){
     val searchList : MutableState<Resource<CharacterRequest>> = mutableStateOf(Resource.Empty())

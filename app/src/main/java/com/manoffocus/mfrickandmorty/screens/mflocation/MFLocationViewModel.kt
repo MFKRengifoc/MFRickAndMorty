@@ -9,14 +9,11 @@ import com.manoffocus.mfrickandmorty.models.characters.MFCharacter
 import com.manoffocus.mfrickandmorty.models.locations.MFLocation
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyCharactersRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyLocationsRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MFLocationViewModel @Inject constructor(
+class MFLocationViewModel(
     private val mfRickAndMortyLocationsRepository: MFRickAndMortyLocationsRepository,
     private val mfRickAndMortyCharactersRepository: MFRickAndMortyCharactersRepository
 ): ViewModel() {

@@ -11,7 +11,6 @@ import com.manoffocus.mfrickandmorty.models.episodes.MFEpisode
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyCharactersRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyEpisodesRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyRepositoryDatabase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,10 +18,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.util.Date
-import javax.inject.Inject
 
-@HiltViewModel
-class MFCharacterViewModel @Inject constructor(
+class MFCharacterViewModel(
     private val rickAndMortyRepositoryDatabase: MFRickAndMortyRepositoryDatabase,
     private val episodesRepository: MFRickAndMortyEpisodesRepository,
     private val charactersRepository: MFRickAndMortyCharactersRepository

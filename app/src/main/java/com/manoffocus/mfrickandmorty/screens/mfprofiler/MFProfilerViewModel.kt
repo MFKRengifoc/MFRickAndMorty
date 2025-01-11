@@ -9,14 +9,11 @@ import com.manoffocus.mfrickandmorty.models.characters.MFCharacter
 import com.manoffocus.mfrickandmorty.models.db.User
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyCharactersRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyRepositoryDatabase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
-import javax.inject.Inject
 
-@HiltViewModel
-class MFProfilerViewModel @Inject constructor(
+class MFProfilerViewModel (
     private var charactersRepository: MFRickAndMortyCharactersRepository,
     private var rickAndMortyRepositoryDatabase: MFRickAndMortyRepositoryDatabase
     ): ViewModel() {

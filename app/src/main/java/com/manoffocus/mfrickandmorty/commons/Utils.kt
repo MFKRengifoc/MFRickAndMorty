@@ -2,7 +2,7 @@ package com.manoffocus.mfrickandmorty.commons
 
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 class Utils {
     companion object {

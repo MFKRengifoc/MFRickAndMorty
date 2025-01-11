@@ -9,14 +9,11 @@ import com.manoffocus.mfrickandmorty.models.characters.MFCharacter
 import com.manoffocus.mfrickandmorty.models.episodes.EpisodesRequest
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyCharactersRepository
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyEpisodesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MFSeasonViewModel @Inject constructor(
+class MFSeasonViewModel(
     private val episodesRepository: MFRickAndMortyEpisodesRepository,
     private val charactersRepository: MFRickAndMortyCharactersRepository
 ): ViewModel() {

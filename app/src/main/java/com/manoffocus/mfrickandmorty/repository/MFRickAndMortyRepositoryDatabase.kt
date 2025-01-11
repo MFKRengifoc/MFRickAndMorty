@@ -10,11 +10,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import javax.inject.Inject
 
-
-class MFRickAndMortyRepositoryDatabase
-@Inject constructor(private val rickAndMortyDao: MFRickAndMortyDao){
+class MFRickAndMortyRepositoryDatabase(private val rickAndMortyDao: MFRickAndMortyDao){
     private val _user = MutableStateFlow<ResourceUser<User>>(ResourceUser.Empty())
     val user : StateFlow<ResourceUser<User>> get() = _user.asStateFlow()
 

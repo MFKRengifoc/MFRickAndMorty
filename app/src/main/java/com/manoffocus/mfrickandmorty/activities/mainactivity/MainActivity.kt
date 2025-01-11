@@ -15,7 +15,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.manoffocus.mfrickandmorty.navigation.MFNavigation
 import com.manoffocus.mfrickandmorty.navigation.MFScreens
@@ -27,9 +26,8 @@ import com.manoffocus.mfrickandmorty.screens.mfsearch.MFSearchViewModel
 import com.manoffocus.mfrickandmorty.screens.mfseason.MFSeasonViewModel
 import com.manoffocus.mfrickandmorty.screens.mfuserprofile.MFUserProfileViewModel
 import com.manoffocus.mfrickandmorty.ui.theme.MFRickAndMortyTheme
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.compose.koinViewModel
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,19 +42,19 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MFRickAndMortyApp(
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = koinViewModel()
 ) {
     MFRickAndMortyTheme() {
         val navController = rememberNavController()
         val requestingBackScreen = rememberSaveable { mutableStateOf("")  }
         val ctx = LocalContext.current
-        val mfHomeViewModel : MFHomeViewModel = hiltViewModel()
-        val mfCharacterViewModel: MFCharacterViewModel = hiltViewModel()
-        val mfLocationViewModel : MFLocationViewModel = hiltViewModel()
-        val mfSeasonViewModel: MFSeasonViewModel = hiltViewModel()
-        val mfSearchViewModel: MFSearchViewModel = hiltViewModel()
-        val mfUserProfileViewModel: MFUserProfileViewModel = hiltViewModel()
-        val mfQuizViewModel: MFQuizViewModel = hiltViewModel()
+        val mfHomeViewModel : MFHomeViewModel = koinViewModel()
+        val mfCharacterViewModel: MFCharacterViewModel = koinViewModel()
+        val mfLocationViewModel : MFLocationViewModel = koinViewModel()
+        val mfSeasonViewModel: MFSeasonViewModel = koinViewModel()
+        val mfSearchViewModel: MFSearchViewModel = koinViewModel()
+        val mfUserProfileViewModel: MFUserProfileViewModel = koinViewModel()
+        val mfQuizViewModel: MFQuizViewModel = koinViewModel()
 
         LaunchedEffect(Unit){
             viewModel.load()

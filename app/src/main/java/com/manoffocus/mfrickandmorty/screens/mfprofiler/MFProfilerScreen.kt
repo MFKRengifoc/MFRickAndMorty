@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.manoffocus.mfrickandmorty.R
 import com.manoffocus.mfrickandmorty.components.mfbutton.MFButton
@@ -44,11 +43,12 @@ import com.manoffocus.mfrickandmorty.navigation.MFScreens
 import com.manoffocus.mfrickandmorty.ui.theme.horizontalPaddingBg
 import com.manoffocus.mfrickandmorty.ui.theme.topBottomPaddingBg
 import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MFProfilerScreen(
     navController: NavController,
-    viewModel: MFProfilerViewModel = hiltViewModel(),
+    viewModel: MFProfilerViewModel = koinViewModel(),
     networkStatus: MutableState<Pair<String, Boolean>>
 ) {
     val onClickedContinue = rememberSaveable { mutableStateOf(false) }

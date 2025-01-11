@@ -10,14 +10,11 @@ import com.google.gson.reflect.TypeToken
 import com.manoffocus.mfrickandmorty.models.db.Quiz
 import com.manoffocus.mfrickandmorty.models.quiz.MFQuiz
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyRepositoryDatabase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.Date
-import javax.inject.Inject
 
-@HiltViewModel
-class MFQuizViewModel @Inject constructor(
+class MFQuizViewModel (
     private val mfRickAndMortyRepositoryDatabase: MFRickAndMortyRepositoryDatabase
 ) : ViewModel() {
     val quiz : MutableState<MFQuiz> = mutableStateOf(MFQuiz())
