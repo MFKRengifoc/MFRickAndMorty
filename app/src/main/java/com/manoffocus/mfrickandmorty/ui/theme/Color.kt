@@ -8,7 +8,7 @@ val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
 
-val darkPrimary = Color(0xFF5982A3)
+val darkPrimary = Color(0xFF008DFF)
 val darkOnPrimary = Color(0xFFFFFBFE)
 val darkPrimaryVariant = Color(0xFF2B5A80)
 val darkSecondary = Color(0xFF76A1BB)
@@ -46,7 +46,7 @@ val mfFanInfoScreenJerrys = darkSecondary.copy()
 
 //MFHomeScreen
 val mfHomeScreenLabelColor = mfSplashScreenTitleColor.copy()
-val mfHomeScreenContenColor = darkPrimary.copy()
+val mfHomeScreenContenColor = Color(0xFF0471A6)
 
 //MFSearchScreen
 val mfSearchScreenDeadColor = darkError.copy()

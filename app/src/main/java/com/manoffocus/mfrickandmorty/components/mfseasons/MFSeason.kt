@@ -21,6 +21,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -66,22 +67,23 @@ fun MFSeason(
 ){
     Card(
         modifier = Modifier
-            .height(200.dp)
-            .width(270.dp)
-            .padding(5.dp)
+            .height(230.dp)
+            .width(400.dp)
+            .padding(horizontal = 10.dp, vertical = 5.dp)
             .clickable { onChoose.invoke(season.firsEpisodeCode) },
         backgroundColor = MaterialTheme.colors.onPrimary,
         elevation = 5.dp
     ) {
         Image(
-            painter = painterResource(id = R.drawable.mf_home_screen_season_bg),
+            painter = painterResource(id = R.drawable.mf_rick_and_morty_season_background),
             contentDescription = stringResource(id = R.string.mf_cd_home_bg),
             contentScale = ContentScale.Crop
         )
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center
         ) {
             Row(
                 modifier = Modifier
@@ -91,7 +93,7 @@ fun MFSeason(
                 Text(text = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
-                            fontSize = 80.sp,
+                            fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             color = mfHomeScreenLabelColor
                         )
@@ -105,7 +107,7 @@ fun MFSeason(
                             color = mfHomeScreenContenColor
                         )
                     ){
-                        append(text = season.firsEpisodeCode[2].toString())
+                        append(text = " ${season.firsEpisodeCode[2]}")
                     }
                 })
             }
@@ -113,7 +115,7 @@ fun MFSeason(
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth()
-                    .background(MaterialTheme.colors.onPrimary.copy(0.7F)),
+                    .background(MaterialTheme.colors.onPrimary.copy(0.08F)),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(

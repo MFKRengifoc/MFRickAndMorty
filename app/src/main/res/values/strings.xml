@@ -71,7 +71,7 @@
     <string name="mf_home_screen_likes_label">Characters you liked</string>
     <string name="mf_home_screen_not_likes_label">Nothing for now</string>
     <string name="mf_home_screen_test_question_jerry_label">Test?</string>
-    <string name="mf_home_screen_season_label">S</string>
+    <string name="mf_home_screen_season_label">Season</string>
     <string name="mf_home_screen_first_episode_label">Start ep: &#160;</string>
     <string name="mf_home_screen_release_date_label">Release date: &#160;</string>
     <string name="mf_home_screen_connected_label">You are online</string>
