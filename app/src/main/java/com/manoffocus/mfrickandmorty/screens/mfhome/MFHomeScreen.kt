@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,6 +36,7 @@ import com.manoffocus.mfrickandmorty.components.mfseasons.MFSeasons
 import com.manoffocus.mfrickandmorty.components.mfsection.MFSectionForVertical
 import com.manoffocus.mfrickandmorty.components.mfsnackbar.MFSnackbar
 import com.manoffocus.mfrickandmorty.components.mfsurface.MFSurface
+import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFComplexHeader
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTexSizes
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFText
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTextTitle
@@ -116,10 +118,13 @@ fun MFHomeScreen(
                         modifier = rowModifier,
                         horizontalAlignmentC = Alignment.Start
                     ) {
-                        MFTextTitle(
-                            modifier = Modifier.padding(start = sidesPaddingBg),
-                            text = stringResource(id = R.string.mf_home_screen_title_locations_label)
-                        )
+                        MFComplexHeader(
+                            modifier = Modifier,
+                            title = stringResource(id = R.string.mf_home_screen_title_locations_label),
+                            actionText = stringResource(id = R.string.mf_home_screen_see_more_data_label)
+                        ){
+                            navController.navigate(MFScreens.MFAllLocationsScreen.name)
+                        }
                         if (locationReq is Resource.Loading || locationReq is Resource.Empty){
                             MFLoadingPlaceHolder(
                                 placeholder = R.raw.mf_loading_planets_lottie,

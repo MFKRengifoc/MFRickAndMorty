@@ -77,6 +77,7 @@
     <string name="mf_home_screen_connected_label">You are online</string>
     <string name="mf_home_screen_disconnected_label">You are offline</string>
     <string name="mf_home_screen_unknown_label">We don´t know about your connection</string>
+    <string name="mf_home_screen_see_more_data_label">See more</string>
 
     <!--  MFLocationScreen  -->
     <string name="mf_location_screen_unknown_label">We don´t know about your connection</string>

@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
@@ -86,25 +87,27 @@ fun MFLocationScreen(
                     } else {
                         if (locationReq is Resource.Success){
                             locationReq.data?.let { data ->
-                                MFSectionForVertical(
-                                    modifier = rowModifier,
-                                    horizontalAlignmentC = Alignment.Start
-                                ) {
-                                    MFChipInfoIcon(
-                                        icon = R.drawable.mf_location_icon,
-                                        value = data.name,
-                                        horizontal = true
-                                    )
-                                    MFChipInfoIcon(
-                                        icon = R.drawable.mf_dimension_icon,
-                                        value = data.dimension,
-                                        horizontal = true
-                                    )
-                                    MFChipInfoIcon(
-                                        icon = R.drawable.mf_info_icon,
-                                        value = data.type,
-                                        horizontal = true
-                                    )
+                                Row {
+                                    MFSectionForVertical(
+                                        modifier = rowModifier,
+                                        horizontalAlignmentC = Alignment.Start
+                                    ) {
+                                        MFChipInfoIcon(
+                                            icon = R.drawable.mf_location_icon,
+                                            value = data.name,
+                                            horizontal = true
+                                        )
+                                        MFChipInfoIcon(
+                                            icon = R.drawable.mf_dimension_icon,
+                                            value = data.dimension,
+                                            horizontal = true
+                                        )
+                                        MFChipInfoIcon(
+                                            icon = R.drawable.mf_info_icon,
+                                            value = data.type,
+                                            horizontal = true
+                                        )
+                                    }
                                 }
                                 MFSectionForVertical(modifier = rowModifier) {
                                     Box(

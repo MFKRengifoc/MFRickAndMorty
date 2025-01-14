@@ -6,6 +6,7 @@ enum class MFScreens {
     MFFanInfoScreen,
     MFHomeScreen,
     MFLocationScreen,
+    MFAllLocationsScreen,
     MFUserProfileScreen,
     MFSeasonScreen,
     MFCharacterScreen,
@@ -18,6 +19,7 @@ enum class MFScreens {
             MFProfilerScreen.name ->  MFProfilerScreen
             MFFanInfoScreen.name ->  MFFanInfoScreen
             MFLocationScreen.name ->  MFLocationScreen
+            MFAllLocationsScreen.name ->  MFAllLocationsScreen
             MFUserProfileScreen.name ->  MFUserProfileScreen
             MFSeasonScreen.name ->  MFSeasonScreen
             MFCharacterScreen.name ->  MFCharacterScreen
