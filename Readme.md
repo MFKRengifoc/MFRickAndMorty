@@ -16,8 +16,9 @@ With this app you can:
 # Dependencies
 
 - *ViewModel*: To add the **MVVM** patron in the project.
-- *Hilt-Dagger*: To add the **dependency injection**: Repositories, Databases.
-- *Hilt Testing*: For **testing** HTTPS connections and Database Processing.
+- *Koin*: To add the **dependency injection**: Repositories, Databases.
+- *~Hilt-Dagger~*: To add the **dependency injection**: Repositories, Databases. (Replaced by Koin)
+- *~Hilt Testing~*: For **testing** HTTPS connections and Database Processing. (Temporally removed)
 - *Coroutines*: For implement the HTTPS request with concurrency.
 - *Coil*: To manage image requests.
 - *Retrofit*: To manage **HTTPS request**.

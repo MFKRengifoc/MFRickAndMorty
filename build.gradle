@@ -3,9 +3,10 @@ buildscript {
         compose_ui_version = '1.2.0'
         lottieVersion = '6.0.0'
         view_model_version = '2.6.1'
-        room_version = '2.5.0'
+        room_version = '2.6.1'
     }
-    dependencies {}
+    dependencies {
+    }
 
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
