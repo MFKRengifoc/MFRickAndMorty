@@ -18,10 +18,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -37,7 +35,6 @@ import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFText
 import com.manoffocus.mfrickandmorty.models.locations.MFLocation
 import com.manoffocus.mfrickandmorty.ui.theme.mfButtonHPadding
 import kotlin.random.Random
-
 
 
 enum class MFLocationType(var type: String) {

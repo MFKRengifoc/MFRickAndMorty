@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.manoffocus.mfrickandmorty.R
-import com.manoffocus.mfrickandmorty.components.mfbutton.MFButton
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterGuard
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterMsgSize
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterTextPosition
@@ -27,7 +26,6 @@ import com.manoffocus.mfrickandmorty.components.mfchipicon.MFChipInfoIcon
 import com.manoffocus.mfrickandmorty.components.mflocations.MFLocations
 import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolder
 import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolderSize
-import com.manoffocus.mfrickandmorty.components.mfscrollviews.MFHorizontal
 import com.manoffocus.mfrickandmorty.components.mfsection.MFSectionForHorizontal
 import com.manoffocus.mfrickandmorty.components.mfsection.MFSectionForVertical
 import com.manoffocus.mfrickandmorty.components.mfsurface.MFSurface
