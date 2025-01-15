@@ -77,11 +77,17 @@
     <string name="mf_home_screen_connected_label">You are online</string>
     <string name="mf_home_screen_disconnected_label">You are offline</string>
     <string name="mf_home_screen_unknown_label">We don´t know about your connection</string>
+    <string name="mf_home_screen_see_more_data_label">See more</string>
 
     <!--  MFLocationScreen  -->
     <string name="mf_location_screen_unknown_label">We don´t know about your connection</string>
     <string name="mf_location_screen_residents_number_label">Residents: %1$s</string>
     <string name="mf_location_screen_loading_number_label">Loading…</string>
+
+    <!--  MFAllLocationsScreen  -->
+    <string name="mf_all_locations_screen_more_button_label">More</string>
+    <string name="mf_all_locations_screen_total_label">Total locations: %1$s</string>
+    <string name="mf_all_locations_screen_residents_number_label">Residents: %1$s</string>
 
     <!--  MFUserProfileScreen  -->
     <string name="mf_user_profile_screen_title">Your profile</string>

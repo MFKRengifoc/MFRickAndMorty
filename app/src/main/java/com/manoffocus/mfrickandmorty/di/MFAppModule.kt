@@ -12,6 +12,7 @@ import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyLocationsRepositor
 import com.manoffocus.mfrickandmorty.repository.MFRickAndMortyRepositoryDatabase
 import com.manoffocus.mfrickandmorty.screens.mfcharacter.MFCharacterViewModel
 import com.manoffocus.mfrickandmorty.screens.mfhome.MFHomeViewModel
+import com.manoffocus.mfrickandmorty.screens.mflocation.MFAllLocationsViewModel
 import com.manoffocus.mfrickandmorty.screens.mflocation.MFLocationViewModel
 import com.manoffocus.mfrickandmorty.screens.mfprofiler.MFProfilerViewModel
 import com.manoffocus.mfrickandmorty.screens.mfquiz.MFQuizViewModel
@@ -89,6 +90,12 @@ val viewViewModels = module {
         MFLocationViewModel(
             mfRickAndMortyLocationsRepository = get<MFRickAndMortyLocationsRepository>(),
             mfRickAndMortyCharactersRepository = get<MFRickAndMortyCharactersRepository>()
+        )
+    }
+    viewModel {
+        MFAllLocationsViewModel(
+            locationsRepository = get<MFRickAndMortyLocationsRepository>(),
+            ioDispatcher = get(named(IO_DISPATCHER))
         )
     }
     viewModel {
