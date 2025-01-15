@@ -19,6 +19,7 @@ import com.manoffocus.mfrickandmorty.screens.mffaninfo.MFFanInfoScreen
 import com.manoffocus.mfrickandmorty.screens.mfhome.MFHomeScreen
 import com.manoffocus.mfrickandmorty.screens.mfhome.MFHomeViewModel
 import com.manoffocus.mfrickandmorty.screens.mflocation.MFAllLocationsScreen
+import com.manoffocus.mfrickandmorty.screens.mflocation.MFAllLocationsViewModel
 import com.manoffocus.mfrickandmorty.screens.mflocation.MFLocationScreen
 import com.manoffocus.mfrickandmorty.screens.mflocation.MFLocationViewModel
 import com.manoffocus.mfrickandmorty.screens.mfprofiler.MFProfilerScreen
@@ -39,6 +40,7 @@ fun MFNavigation(
     mfHomeViewModel: MFHomeViewModel,
     mfCharacterViewModel: MFCharacterViewModel,
     mfLocationViewModel: MFLocationViewModel,
+    mfAllLocationsViewModel: MFAllLocationsViewModel,
     mfSeasonViewModel: MFSeasonViewModel,
     mfSearchViewModel: MFSearchViewModel,
     mfUserProfileViewModel: MFUserProfileViewModel,
@@ -116,7 +118,7 @@ fun MFNavigation(
             MFAllLocationsScreen(
                 navController = navController,
                 connectedStatus = networkStatus,
-                mfLocationViewModel = mfLocationViewModel,
+                mfAllLocationsViewModel = mfAllLocationsViewModel,
                 user = user.data
             ){
                 requestingBackScreen.value = MFScreens.MFAllLocationsScreen.name

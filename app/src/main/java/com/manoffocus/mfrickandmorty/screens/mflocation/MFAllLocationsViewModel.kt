@@ -15,10 +15,12 @@ class MFAllLocationsViewModel(
     private val locationsRepository: MFRickAndMortyLocationsRepository,
     private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
-    val locationReq : MutableState<Resource<LocationsRequest>> = mutableStateOf(Resource.Empty())
     var locations : MutableState<List<MFLocation>> = mutableStateOf(emptyList())
+    val locationReq : MutableState<Resource<LocationsRequest>> = mutableStateOf(Resource.Empty())
+    val page = mutableStateOf(1)
+    val loadedInitialData = mutableStateOf(false)
 
-    suspend fun getLocationsByPageCode(page: Int){
+    private suspend fun getLocationsByPageCode(page: Int){
         viewModelScope.launch(ioDispatcher) {
             locationReq.value = Resource.Loading()
             locationsRepository.getLocationsByPageNumber(page).collect { res ->
@@ -34,5 +36,23 @@ class MFAllLocationsViewModel(
                 }
             }
         }
+    }
+
+    suspend fun getData(){
+        loadedInitialData.value = true
+        getLocationsByPageCode(page.value)
+    }
+
+    fun nextPage() {
+        page.value += 1
+        viewModelScope.launch(ioDispatcher) {
+            getLocationsByPageCode(page.value)
+        }
+    }
+
+    fun clear(){
+        locations.value = emptyList()
+        page.value = 0
+        loadedInitialData.value = false
     }
 }

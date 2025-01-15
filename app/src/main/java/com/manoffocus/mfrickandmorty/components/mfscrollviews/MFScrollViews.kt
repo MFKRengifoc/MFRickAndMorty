@@ -3,8 +3,10 @@ package com.manoffocus.mfrickandmorty.components.mfscrollviews
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,9 +33,11 @@ fun MFHorizontal(
 fun MFVertical(
     modifier: Modifier,
     list: List<Any> = emptyList(),
-    content : @Composable ((Any) -> Unit)
+    state: LazyListState = rememberLazyListState(),
+    content: @Composable (Any) -> Unit,
 ) {
     LazyColumn(
+        state = state,
         modifier = modifier.background(MaterialTheme.colors.background),
         contentPadding = PaddingValues(vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

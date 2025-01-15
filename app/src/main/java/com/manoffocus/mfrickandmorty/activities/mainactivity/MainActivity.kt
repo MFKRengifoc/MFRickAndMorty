@@ -20,6 +20,7 @@ import com.manoffocus.mfrickandmorty.navigation.MFNavigation
 import com.manoffocus.mfrickandmorty.navigation.MFScreens
 import com.manoffocus.mfrickandmorty.screens.mfcharacter.MFCharacterViewModel
 import com.manoffocus.mfrickandmorty.screens.mfhome.MFHomeViewModel
+import com.manoffocus.mfrickandmorty.screens.mflocation.MFAllLocationsViewModel
 import com.manoffocus.mfrickandmorty.screens.mflocation.MFLocationViewModel
 import com.manoffocus.mfrickandmorty.screens.mfquiz.MFQuizViewModel
 import com.manoffocus.mfrickandmorty.screens.mfsearch.MFSearchViewModel
@@ -51,6 +52,7 @@ fun MFRickAndMortyApp(
         val mfHomeViewModel : MFHomeViewModel = koinViewModel()
         val mfCharacterViewModel: MFCharacterViewModel = koinViewModel()
         val mfLocationViewModel : MFLocationViewModel = koinViewModel()
+        val mfAllLocationsViewModel : MFAllLocationsViewModel = koinViewModel()
         val mfSeasonViewModel: MFSeasonViewModel = koinViewModel()
         val mfSearchViewModel: MFSearchViewModel = koinViewModel()
         val mfUserProfileViewModel: MFUserProfileViewModel = koinViewModel()
@@ -94,6 +96,7 @@ fun MFRickAndMortyApp(
                 mfHomeViewModel = mfHomeViewModel,
                 mfCharacterViewModel = mfCharacterViewModel,
                 mfLocationViewModel = mfLocationViewModel,
+                mfAllLocationsViewModel = mfAllLocationsViewModel,
                 mfSeasonViewModel = mfSeasonViewModel,
                 mfSearchViewModel = mfSearchViewModel,
                 mfUserProfileViewModel = mfUserProfileViewModel,

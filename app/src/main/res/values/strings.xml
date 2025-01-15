@@ -84,6 +84,11 @@
     <string name="mf_location_screen_residents_number_label">Residents: %1$s</string>
     <string name="mf_location_screen_loading_number_label">Loading…</string>
 
+    <!--  MFAllLocationsScreen  -->
+    <string name="mf_all_locations_screen_more_button_label">More</string>
+    <string name="mf_all_locations_screen_total_label">Total locations: %1$s</string>
+    <string name="mf_all_locations_screen_residents_number_label">Residents: %1$s</string>
+
     <!--  MFUserProfileScreen  -->
     <string name="mf_user_profile_screen_title">Your profile</string>
     <string name="mf_user_profile_screen_quiz_label">Quizzes</string>
