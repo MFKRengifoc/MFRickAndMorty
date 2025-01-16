@@ -119,6 +119,7 @@
     <string name="mf_search_screen_male_filter_label">Male</string>
     <string name="mf_search_screen_female_filter_label">Female</string>
     <string name="mf_search_screen_unknown_filter_label">Unknown</string>
+    <string name="mf_search_screen_total_characters_label">Total characters: %1$s</string>
 
     <!--  MFLoader  -->
     <string name="mf_loader_loading_seasons_label">Loading seasons…</string>

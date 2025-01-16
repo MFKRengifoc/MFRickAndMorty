@@ -1,7 +1,6 @@
 package com.manoffocus.mfrickandmorty.components.mfcharacter
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,9 +10,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,7 +40,6 @@ import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTextTitle
 import com.manoffocus.mfrickandmorty.models.characters.MFCharacter
 import com.manoffocus.mfrickandmorty.ui.theme.horizontalPaddingBg
 import com.manoffocus.mfrickandmorty.ui.theme.sidesPaddingBg
-import com.manoffocus.mfrickandmorty.ui.theme.topBottomPaddingBg
 import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
 
 @Composable
@@ -120,15 +119,19 @@ fun MFCharacterFound(
 @Composable
 fun MFCharacterFoundAvatar(
     character: MFCharacter
-){
-    Card(
-        modifier = Modifier,
-        elevation = 0.dp,
-        shape = RoundedCornerShape(corner = CornerSize(10.dp))
+) {
+    Box(
+        modifier = Modifier
+            .padding(5.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
+        Card(
             modifier = Modifier
-        ){
+                .size(65.dp)
+                .offset(y = 6.dp),
+            shape = CircleShape,
+            elevation = 4.dp
+        ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(character.image)
@@ -136,49 +139,34 @@ fun MFCharacterFoundAvatar(
                     .build(),
                 placeholder = painterResource(R.drawable.mf_placeholder_icon),
                 contentDescription = stringResource(R.string.mf_cd_placeholder_character) + character.name,
-                contentScale = ContentScale.FillHeight,
+                contentScale = ContentScale.Crop,
                 error = painterResource(id = R.drawable.mf_alert_icon),
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             )
-            Column(
+        }
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .offset(y = (-14).dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
                 modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.End
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(bottom = topBottomPaddingBg)
-                        .height(20.dp)
-                        .border(10.dp, Color.Transparent)
-                        .background(
-                            color = Color.Black.copy(0.8F),
-                            shape = RoundedCornerShape(
-                                topStart = 10.dp,
-                                bottomStart = 10.dp
-                            )
-                        ),
-                    horizontalArrangement = Arrangement.spacedBy(
-                        space = 5.dp,
-                        alignment = Alignment.CenterHorizontally
-                    ),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Spacer(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .background(
-                                color = getStatusColor(character.status),
-                                shape = CircleShape
-                            ),
+                    .size(12.dp)
+                    .background(
+                        color = getStatusColor(character.status),
+                        shape = CircleShape
                     )
-                    MFText(
-                        text = character.status,
-                        size = MFTexSizes.SMALL
-                    )
-                }
-            }
+            )
+
+            Spacer(modifier = Modifier.width(4.dp))
+
+            MFText(
+                text = character.status,
+                size = MFTexSizes.SMALL,
+                color = Color.White
+            )
         }
     }
 }

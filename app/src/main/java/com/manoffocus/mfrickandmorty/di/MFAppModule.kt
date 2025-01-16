@@ -112,7 +112,8 @@ val viewViewModels = module {
     }
     viewModel {
         MFSearchViewModel(
-            charactersRepository = get<MFRickAndMortyCharactersRepository>()
+            charactersRepository = get<MFRickAndMortyCharactersRepository>(),
+            ioDispatcher = get(named(IO_DISPATCHER))
         )
     }
     viewModel {

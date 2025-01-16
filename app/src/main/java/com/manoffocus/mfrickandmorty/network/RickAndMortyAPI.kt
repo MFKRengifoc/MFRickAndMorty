@@ -19,6 +19,8 @@ interface RickAndMortyAPI {
     suspend fun getCharacterById(@Path("id") id: Int): MFCharacter
     @GET("character")
     suspend fun getCharacterBy(@Query("name") name: String, @Query("status") status: String, @Query("gender") gender: String): CharacterRequest
+    @GET("character")
+    suspend fun getCharacterByNextPage(@Query("page") page: Int, @Query("name") name: String, @Query("status") status: String, @Query("gender") gender: String): CharacterRequest
     @GET("location/{id}")
     suspend fun getLocationById(@Path("id") id: Int): MFLocation
     @GET("location")

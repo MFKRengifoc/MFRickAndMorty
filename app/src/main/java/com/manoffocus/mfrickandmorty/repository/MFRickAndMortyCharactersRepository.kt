@@ -88,6 +88,27 @@ class MFRickAndMortyCharactersRepository (private val api: RickAndMortyAPI) {
             Resource.Error(message = exception.message.toString(), code = RepositoryExceptionCodes.GENERAL_EXCEPTION)
         }
     }
+
+    private suspend fun getCharacterByNextPage(page: Int, name: String, status: String, gender: String): Resource<CharacterRequest> {
+        return try {
+            val characterRequest = api.getCharacterByNextPage(page = page, name = name, status = status, gender = gender)
+            Resource.Success(data = characterRequest, code = RepositoryExceptionCodes.SUCCESS)
+        } catch (socketException: SocketTimeoutException){
+            Resource.Error(message = socketException.message.toString(), code = RepositoryExceptionCodes.SOCKET_TIMEOUT_EXCEPTION)
+        } catch (timeOutException: TimeoutException){
+            Resource.Error(message = timeOutException.message.toString(), code = RepositoryExceptionCodes.TIMEOUT_EXCEPTION)
+        } catch (unknownHostException: UnknownHostException){
+            Resource.Error(message = unknownHostException.message.toString(), code = RepositoryExceptionCodes.UNKNOWN_HOST_EXCEPTION)
+        } catch (httpException: HttpException){
+            Resource.Error(
+                message = httpException.message.toString(),
+                code = if (httpException.code() == 404) RepositoryExceptionCodes.NOTHING_HERE_EXCEPTION else RepositoryExceptionCodes.NOT_FOUND
+            )
+        } catch (exception: Exception){
+            Resource.Error(message = exception.message.toString(), code = RepositoryExceptionCodes.GENERAL_EXCEPTION)
+        }
+    }
+
     /**
      * Returns a [CharacterRequest] Flow on [Resource] object
      * Must be used to call an API method on [MFRickAndMortyCharactersRepository]
@@ -114,6 +135,27 @@ class MFRickAndMortyCharactersRepository (private val api: RickAndMortyAPI) {
         }
         return characters
     }
+
+    suspend fun getCharacterByFieldsNextPage(page: Int, name: String, status: String, gender: String): MutableStateFlow<Resource<CharacterRequest>> {
+        val characters = MutableStateFlow<Resource<CharacterRequest>>(Resource.Empty())
+        try {
+            characters.emit(Resource.Loading())
+            when(val response = getCharacterByNextPage(page = page, name = name, status = status, gender = gender)){
+                is Resource.Error -> {
+                    response.message?.let { msg ->
+                        characters.emit(Resource.Error(message = msg, code = response.code))
+                    }
+                }
+                is Resource.Success -> {
+                    characters.emit(response)
+                } else ->{}
+            }
+        } catch (e: Exception){
+            Log.d(TAG, "$e")
+        }
+        return characters
+    }
+
     /**
      * Returns a [MFCharacter] list Flow on [Resource] object
      * Must be used to call an API method on [MFRickAndMortyCharactersRepository]

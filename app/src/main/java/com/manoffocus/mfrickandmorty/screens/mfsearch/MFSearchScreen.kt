@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
@@ -14,12 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.manoffocus.mfrickandmorty.R
+import com.manoffocus.mfrickandmorty.components.mfbutton.MFButton
 import com.manoffocus.mfrickandmorty.components.mfcharacter.MFCharacterFound
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterGuard
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterMsgSize
@@ -48,6 +51,11 @@ fun MFSearchScreen(
         onBackClick.invoke()
     }
     val searches = mfSearchViewModel.searchList.value
+    val searchItems = mfSearchViewModel.searchItems.value
+    val activeNextButton = remember { mfSearchViewModel.activeNextPageButton }
+    val listState = rememberSaveable(saver = LazyListState.Saver) {
+        LazyListState()
+    }
     Scaffold(
         modifier = Modifier.background(MaterialTheme.colors.background),
         topBar = {
@@ -109,15 +117,7 @@ fun MFSearchScreen(
                         when(searches){
                             is Resource.Success -> {
                                 searches.data?.let { data ->
-                                    data.results?.let { results ->
-                                        for (res in results){
-                                            MFCharacterFound(
-                                                character = res
-                                            ){
-                                                navController.navigate(MFScreens.MFCharacterScreen.name + "/${res.id}")
-                                            }
-                                        }
-                                    } ?: run {
+                                    if (searchItems.isEmpty()){
                                         val mT = stringResource(id = R.string.mf_search_screen_nothing_search_label)
                                         val mortyText = remember {
                                             mutableStateOf(mT)
@@ -129,6 +129,23 @@ fun MFSearchScreen(
                                             msg = mortyText,
                                             textPosition = MFCharacterTextPosition.LEFT
                                         )
+                                    } else {
+                                        MFText(text = stringResource(id = R.string.mf_search_screen_total_characters_label, searchItems.size))
+                                        for (res in searchItems){
+                                            MFCharacterFound(
+                                                character = res
+                                            ){
+                                                navController.navigate(MFScreens.MFCharacterScreen.name + "/${res.id}")
+                                            }
+                                        }
+                                        if (activeNextButton.value){
+                                            MFButton(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                text = stringResource(id = R.string.mf_all_locations_screen_more_button_label)
+                                            ){
+                                                mfSearchViewModel.loadNextPage()
+                                            }
+                                        }
                                     }
                                 }
                             }
