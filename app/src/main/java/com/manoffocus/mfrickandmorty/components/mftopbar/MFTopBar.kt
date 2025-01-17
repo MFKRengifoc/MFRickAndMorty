@@ -19,6 +19,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +42,7 @@ import com.manoffocus.mfrickandmorty.ui.theme.verticalPaddingBg
 
 @Composable
 fun MFTopBar(
+    backgroundColor : Color =  MaterialTheme.colors.background,
     user: User? = null,
     actualScreen: MFScreens = MFScreens.MFHomeScreen,
     onUserProfileClick: () -> Unit = {},
@@ -57,10 +59,11 @@ fun MFTopBar(
             .padding(vertical = verticalPaddingBg)
             .height(80.dp)
             .fillMaxWidth()
-            .background(MaterialTheme.colors.background),
+            .background(backgroundColor),
         navigationIcon = {
             TopBarRow(
-                modifier = Modifier
+                modifier = Modifier,
+                backgroundColor = backgroundColor
             ) {
                 when(actualScreen){
                     MFScreens.MFHomeScreen -> {
@@ -91,7 +94,8 @@ fun MFTopBar(
             when(actualScreen){
                 MFScreens.MFUserProfileScreen -> {
                     TopBarRow(
-                        modifier = Modifier.fillMaxWidth(1F)
+                        modifier = Modifier.fillMaxWidth(1F),
+                        backgroundColor = backgroundColor
                     ) {
                         MFText(
                             text = stringResource(id = R.string.mf_user_profile_screen_title),
@@ -127,7 +131,8 @@ fun MFTopBar(
                 else -> {
                     user?.let { us ->
                         TopBarRow(
-                            modifier = Modifier.fillMaxWidth(1F)
+                            modifier = Modifier.fillMaxWidth(1F),
+                            backgroundColor = backgroundColor
                         ) {
                             MFText(
                                 text = us.name
@@ -140,7 +145,8 @@ fun MFTopBar(
         actions = {
             TopBarRow(
                 modifier = Modifier
-                    .fillMaxWidth(0.2F)
+                    .fillMaxWidth(0.2F),
+                backgroundColor = backgroundColor
             ) {
                 when (actualScreen){
                     MFScreens.MFCharacterScreen -> {
@@ -180,19 +186,20 @@ fun MFTopBar(
                 }
             }
         },
-        backgroundColor = MaterialTheme.colors.background,
+        backgroundColor = backgroundColor,
         elevation = 0.dp
     )
 }
 @Composable
 fun TopBarRow(
     modifier: Modifier,
+    backgroundColor: Color = MaterialTheme.colors.background,
     content: @Composable() (() -> Unit)
 ){
     Row(
     modifier = modifier
         .fillMaxHeight()
-        .background(MaterialTheme.colors.background),
+        .background(backgroundColor),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.Center
     ) {
