@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manoffocus.mfrickandmorty.data.Resource
 import com.manoffocus.mfrickandmorty.models.db.CharacterLike
+import com.manoffocus.mfrickandmorty.models.db.Location
 import com.manoffocus.mfrickandmorty.models.episodes.EpisodesRequest
 import com.manoffocus.mfrickandmorty.models.episodes.MFEpisode
 import com.manoffocus.mfrickandmorty.models.locations.LocationsRequest
@@ -23,6 +24,7 @@ class MFHomeViewModel(
     private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
     val likes : MutableState<List<CharacterLike>> = mutableStateOf(emptyList())
+    val locationsVisited : MutableState<List<Location>> = mutableStateOf(emptyList())
     val locationReq : MutableState<Resource<LocationsRequest>> = mutableStateOf(Resource.Empty())
     var locations : MutableState<List<MFLocation>> = mutableStateOf(emptyList())
     val seasonReq : MutableState<Resource<EpisodesRequest>> = mutableStateOf(Resource.Empty())
@@ -31,6 +33,11 @@ class MFHomeViewModel(
     private fun getLikes(){
         viewModelScope.launch(ioDispatcher) {
             rickAndMortyRepositoryDatabase.getAllLikes()
+        }
+    }
+    private fun getLocationsVisited(){
+        viewModelScope.launch(ioDispatcher) {
+            rickAndMortyRepositoryDatabase.getAllLocationsVisited()
         }
     }
     fun getSeasonsByFirstEpisodeCode(code: String){
@@ -66,9 +73,18 @@ class MFHomeViewModel(
             }
         }
     }
+    private fun collectLocationsVisited(){
+        viewModelScope.launch {
+            rickAndMortyRepositoryDatabase.locationsVisited.collect { res ->
+                locationsVisited.value = res
+            }
+        }
+    }
     suspend fun getData(){
         collectLikes()
+        collectLocationsVisited()
         getLikes()
+        getLocationsVisited()
         getLocationsByPageCode(1)
         getSeasonsByFirstEpisodeCode("E01")
     }

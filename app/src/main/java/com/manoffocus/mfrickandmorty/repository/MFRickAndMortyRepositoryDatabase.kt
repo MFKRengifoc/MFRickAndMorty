@@ -3,6 +3,7 @@ package com.manoffocus.mfrickandmorty.repository
 import com.manoffocus.mfrickandmorty.dao.MFRickAndMortyDao
 import com.manoffocus.mfrickandmorty.data.ResourceUser
 import com.manoffocus.mfrickandmorty.models.db.CharacterLike
+import com.manoffocus.mfrickandmorty.models.db.Location
 import com.manoffocus.mfrickandmorty.models.db.Quiz
 import com.manoffocus.mfrickandmorty.models.db.User
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +18,8 @@ class MFRickAndMortyRepositoryDatabase(private val rickAndMortyDao: MFRickAndMor
 
     private val _likes = MutableStateFlow<List<CharacterLike>>(emptyList())
     val likes : StateFlow<List<CharacterLike>> get() = _likes.asStateFlow()
+    private val _locationsVisited = MutableStateFlow<List<Location>>(emptyList())
+    val locationsVisited : StateFlow<List<Location>> get() = _locationsVisited.asStateFlow()
     private val _quizzes = MutableStateFlow<List<Quiz>>(emptyList())
     val quizzes : StateFlow<List<Quiz>> get() = _quizzes.asStateFlow()
 
@@ -54,6 +57,16 @@ class MFRickAndMortyRepositoryDatabase(private val rickAndMortyDao: MFRickAndMor
             _quizzes.value = quizzes
         }
     }
+
+    suspend fun insertLocation(location: Location) = rickAndMortyDao.insertLocation(location)
+    private fun getAllLocations(): Flow<List<Location>> = rickAndMortyDao.getAllLocations()
+    suspend fun getLocationById(id: Int): Flow<Location> = rickAndMortyDao.getLocationById(locationId = id)
+    suspend fun getAllLocationsVisited(){
+        getAllLocations().distinctUntilChanged().collect { locations ->
+            _locationsVisited.value = locations
+        }
+    }
+
     companion object {
         const val TAG = "MFRepositoryDatabase"
     }

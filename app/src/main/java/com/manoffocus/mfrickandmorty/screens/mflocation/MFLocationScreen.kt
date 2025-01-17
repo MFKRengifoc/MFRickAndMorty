@@ -50,6 +50,7 @@ fun MFLocationScreen(
     }
     val locationReq = mfLocationViewModel.locationReq.value
     val characters = mfLocationViewModel.characters.value
+
     val rowModifier = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.colors.background)

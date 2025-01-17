@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -27,7 +29,9 @@ import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterGua
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterMsgSize
 import com.manoffocus.mfrickandmorty.components.mfcharactersguard.MFCharacterTextPosition
 import com.manoffocus.mfrickandmorty.components.mfchipicon.MFChipInfoIcon
+import com.manoffocus.mfrickandmorty.components.mflocations.MFLocationSize
 import com.manoffocus.mfrickandmorty.components.mflocations.MFLocations
+import com.manoffocus.mfrickandmorty.components.mflocations.MFVisitedLocation
 import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolder
 import com.manoffocus.mfrickandmorty.components.mflottie.MFLoadingPlaceHolderSize
 import com.manoffocus.mfrickandmorty.components.mfscrollviews.MFHorizontal
@@ -42,6 +46,7 @@ import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTextTitle
 import com.manoffocus.mfrickandmorty.components.mftopbar.MFTopBar
 import com.manoffocus.mfrickandmorty.data.Resource
 import com.manoffocus.mfrickandmorty.models.db.CharacterLike
+import com.manoffocus.mfrickandmorty.models.db.Location
 import com.manoffocus.mfrickandmorty.models.db.User
 import com.manoffocus.mfrickandmorty.models.seasons.Season
 import com.manoffocus.mfrickandmorty.navigation.MFScreens
@@ -57,6 +62,7 @@ fun MFHomeScreen(
     onBackClick: () -> Unit
 ) {
     val likes by mfHomeViewModel.likes
+    val locationsVisited by mfHomeViewModel.locationsVisited
     val locationReq = mfHomeViewModel.locationReq.value
     val seasonReq = mfHomeViewModel.seasonReq.value
     val locations = mfHomeViewModel.locations.value
@@ -109,7 +115,8 @@ fun MFHomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(),
+                    .padding()
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (connectedStatus.value.second){
@@ -185,45 +192,89 @@ fun MFHomeScreen(
                             }
                         }
                     }
-                    MFSectionForVertical(
-                        modifier = rowModifier,
-                        horizontalAlignmentC = Alignment.Start
-                    ) {
-                        MFTextTitle(
-                            modifier = Modifier.padding(start = sidesPaddingBg),
-                            text = stringResource(id = R.string.mf_home_screen_likes_label),
-                            maxWidth = 300.dp,
-                            align = TextAlign.Start
-                        )
-                        if (likes.isNotEmpty()){
-                            MFHorizontal(
-                                modifier = Modifier,
-                                list = likes
-                            ) { like ->
-                                val characterLike = like as CharacterLike
-                                Column(
-                                    modifier = Modifier
-                                        .size(MFCharacterAvatarSize.MEDIUM.size)
-                                        .padding(start = sidesPaddingBg),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    MFCharacterAvatar(
-                                        modifier = Modifier,
-                                        size = MFCharacterAvatarSize.SMALL,
-                                        characterUrl = characterLike.characterImage,
-                                        characterName = characterLike.name,
-                                    ){
-                                        navController.navigate(MFScreens.MFCharacterScreen.name + "/${characterLike.characterId}")
+                    if (likes.isNotEmpty()){
+                        MFSectionForVertical(
+                            modifier = rowModifier,
+                            horizontalAlignmentC = Alignment.Start
+                        ) {
+                            MFTextTitle(
+                                modifier = Modifier.padding(start = sidesPaddingBg),
+                                text = stringResource(id = R.string.mf_home_screen_likes_label),
+                                maxWidth = 300.dp,
+                                align = TextAlign.Start
+                            )
+                            if (likes.isNotEmpty()){
+                                MFHorizontal(
+                                    modifier = Modifier,
+                                    list = likes
+                                ) { like ->
+                                    val characterLike = like as CharacterLike
+                                    Column(
+                                        modifier = Modifier
+                                            .size(MFCharacterAvatarSize.MEDIUM.size)
+                                            .padding(start = sidesPaddingBg),
+                                        verticalArrangement = Arrangement.Center,
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        MFCharacterAvatar(
+                                            modifier = Modifier,
+                                            size = MFCharacterAvatarSize.SMALL,
+                                            characterUrl = characterLike.characterImage,
+                                            characterName = characterLike.name,
+                                        ){
+                                            navController.navigate(MFScreens.MFCharacterScreen.name + "/${characterLike.characterId}")
+                                        }
                                     }
                                 }
+                            } else {
+                                MFText(
+                                    modifier = Modifier.padding(start = sidesPaddingBg * 2),
+                                    text = stringResource(id = R.string.mf_home_screen_not_likes_label),
+                                    align = TextAlign.Center
+                                )
                             }
-                        } else {
-                            MFText(
-                                modifier = Modifier.padding(start = sidesPaddingBg * 2),
-                                text = stringResource(id = R.string.mf_home_screen_not_likes_label),
-                                align = TextAlign.Center
+                        }
+                    }
+
+                    if (locationsVisited.isNotEmpty()){
+                        MFSectionForVertical(
+                            modifier = rowModifier,
+                            horizontalAlignmentC = Alignment.Start
+                        ) {
+                            MFTextTitle(
+                                modifier = Modifier.padding(start = sidesPaddingBg),
+                                text = stringResource(id = R.string.mf_home_screen_locations_label),
+                                maxWidth = 300.dp,
+                                align = TextAlign.Start
                             )
+                            if (locationsVisited.isNotEmpty()){
+                                MFHorizontal(
+                                    modifier = Modifier,
+                                    list = locationsVisited
+                                ) { location ->
+                                    val locationVisited = location as Location
+                                    Column(
+                                        modifier = Modifier
+                                            .size(MFCharacterAvatarSize.MEDIUM.size)
+                                            .padding(start = sidesPaddingBg),
+                                        verticalArrangement = Arrangement.Center
+                                    ){
+                                        MFVisitedLocation(
+                                            modifier = Modifier,
+                                            location = locationVisited,
+                                            size = MFLocationSize.XSMALL
+                                        ) {
+                                            navController.navigate(MFScreens.MFLocationScreen.name + "/${locationVisited.locationId}")
+                                        }
+                                    }
+                                }
+                            } else {
+                                MFText(
+                                    modifier = Modifier.padding(start = sidesPaddingBg * 2),
+                                    text = stringResource(id = R.string.mf_home_screen_not_likes_label),
+                                    align = TextAlign.Center
+                                )
+                            }
                         }
                     }
                 } else {
@@ -237,7 +288,6 @@ fun MFHomeScreen(
                         textPosition = MFCharacterTextPosition.LEFT
                     )
                 }
-                
             }
         }
     }

@@ -25,16 +25,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.manoffocus.mfrickandmorty.R
 import com.manoffocus.mfrickandmorty.components.mfbutton.MFButton
 import com.manoffocus.mfrickandmorty.components.mfbutton.MFButtonSize
 import com.manoffocus.mfrickandmorty.components.mfscrollviews.MFHorizontal
 import com.manoffocus.mfrickandmorty.components.mfscrollviews.MFVertical
+import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFTexSizes
 import com.manoffocus.mfrickandmorty.components.mftextcomponents.MFText
+import com.manoffocus.mfrickandmorty.models.db.Location
 import com.manoffocus.mfrickandmorty.models.locations.MFLocation
 import com.manoffocus.mfrickandmorty.ui.theme.mfButtonHPadding
 import kotlin.random.Random
+
+
+enum class MFLocationSize(var size: Dp){
+    XLARGE(size = 260.dp),
+    LARGE(size = 200.dp),
+    MEDIUM(size = 100.dp),
+    SMALL(size = 70.dp),
+    XSMALL(size = 50.dp);
+    companion object {
+        fun fromCharacterSize(size: MFLocationSize): MFTexSizes {
+            return when(size){
+                XLARGE -> MFTexSizes.XLARGE
+                LARGE -> MFTexSizes.LARGE
+                MEDIUM -> MFTexSizes.MEDIUM
+                SMALL -> MFTexSizes.SMALL
+                XSMALL -> MFTexSizes.XSMALL
+            }
+        }
+    }
+}
 
 
 enum class MFLocationType(var type: String) {
@@ -116,6 +139,27 @@ fun MFLocation(
                 .clickable { onClick.invoke() },
             imageResId = imageResId,
             name = location.name
+        )
+    }
+}
+
+@Composable
+fun MFVisitedLocation(
+    modifier: Modifier,
+    size: MFLocationSize = MFLocationSize.MEDIUM,
+    location: Location,
+    onClick: () -> Unit
+){
+    Box(
+        modifier = Modifier
+            .padding(horizontal = mfButtonHPadding)
+            .clickable { onClick.invoke() }
+    ) {
+        MFLocationImage(
+            modifier = Modifier
+                .clickable { onClick.invoke() },
+            size = size,
+            imageResId = getImageResIdByType(location.type)
         )
     }
 }
@@ -204,7 +248,12 @@ private fun getImageResIdByType(locationType: String): Int {
 }
 
 @Composable
-fun MFLocationImage(modifier: Modifier, imageResId: Int, name: String) {
+fun MFLocationImage(
+    modifier: Modifier,
+    size: MFLocationSize = MFLocationSize.MEDIUM,
+    imageResId: Int,
+    name: String? = null
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -216,14 +265,16 @@ fun MFLocationImage(modifier: Modifier, imageResId: Int, name: String) {
             contentDescription = "Imagen",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(60.dp)
+                .size(size.size)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Box {
-            MFText(
-                text = if (name.length > 15) name.take(15) + "..." else name,
-                size = MFButtonSize.fromButtonSize(MFButtonSize.MEDIUM)
-            )
+        name?.let {
+            Box {
+                MFText(
+                    text = if (name.length > 15) name.take(15) + "..." else name,
+                    size = MFButtonSize.fromButtonSize(MFButtonSize.MEDIUM)
+                )
+            }
         }
     }
 }

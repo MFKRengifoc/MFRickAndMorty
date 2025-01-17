@@ -69,6 +69,7 @@
     <string name="mf_home_screen_title_locations_label">Locations</string>
     <string name="mf_home_screen_title_seasons_label">Seasons</string>
     <string name="mf_home_screen_likes_label">Characters you liked</string>
+    <string name="mf_home_screen_locations_label">Locations you visited</string>
     <string name="mf_home_screen_not_likes_label">Nothing for now</string>
     <string name="mf_home_screen_test_question_jerry_label">Test?</string>
     <string name="mf_home_screen_season_label">Season</string>
