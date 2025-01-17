@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.manoffocus.mfrickandmorty.models.db.CharacterLike
+import com.manoffocus.mfrickandmorty.models.db.Location
 import com.manoffocus.mfrickandmorty.models.db.Quiz
 import com.manoffocus.mfrickandmorty.models.db.User
 import kotlinx.coroutines.flow.Flow
@@ -37,4 +38,12 @@ interface MFRickAndMortyDao {
     suspend fun insertQuiz(quiz: Quiz)
     @Query("SELECT * FROM quiz_tbl")
     fun getAllQuiz(): Flow<List<Quiz>>
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLocation(location: Location)
+    @Query("SELECT * FROM location_tbl")
+    fun getAllLocations(): Flow<List<Location>>
+    @Query("SELECT * FROM location_tbl where location_id=:locationId")
+    fun getLocationById(locationId: Int): Flow<Location>
 }

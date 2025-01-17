@@ -88,6 +88,7 @@ val viewViewModels = module {
     }
     viewModel {
         MFLocationViewModel(
+            rickAndMortyRepositoryDatabase = get<MFRickAndMortyRepositoryDatabase>(),
             mfRickAndMortyLocationsRepository = get<MFRickAndMortyLocationsRepository>(),
             mfRickAndMortyCharactersRepository = get<MFRickAndMortyCharactersRepository>()
         )
@@ -96,12 +97,6 @@ val viewViewModels = module {
         MFAllLocationsViewModel(
             locationsRepository = get<MFRickAndMortyLocationsRepository>(),
             ioDispatcher = get(named(IO_DISPATCHER))
-        )
-    }
-    viewModel {
-        MFLocationViewModel(
-            mfRickAndMortyLocationsRepository = get<MFRickAndMortyLocationsRepository>(),
-            mfRickAndMortyCharactersRepository = get<MFRickAndMortyCharactersRepository>()
         )
     }
     viewModel {
