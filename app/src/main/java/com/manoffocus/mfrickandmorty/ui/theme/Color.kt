@@ -27,7 +27,7 @@ val mortySecondColor = Color(0xFFE4A788)
 
 
 // MFSplashScreen
-val mfSplashScreenTitleColor = Color(0xFF9B5094)
+val mfSplashScreenTitleColor = Color(0xFFBA4DB0)
 val mfSplashScreenSubTitleColor = Color(0xFF44FFD2)
 
 // MFInput

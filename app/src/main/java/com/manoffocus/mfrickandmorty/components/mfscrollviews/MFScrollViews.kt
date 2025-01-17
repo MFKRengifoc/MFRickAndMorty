@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -32,13 +33,14 @@ fun MFHorizontal(
 @Composable
 fun MFVertical(
     modifier: Modifier,
+    backgroundColor: Color = MaterialTheme.colors.background,
     list: List<Any> = emptyList(),
     state: LazyListState = rememberLazyListState(),
     content: @Composable (Any) -> Unit,
 ) {
     LazyColumn(
         state = state,
-        modifier = modifier.background(MaterialTheme.colors.background),
+        modifier = modifier.background(backgroundColor),
         contentPadding = PaddingValues(vertical = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
