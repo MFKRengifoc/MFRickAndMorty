@@ -62,7 +62,7 @@
     <string name="mf_topbar_arrow_back_label">Arrow back Icon</string>
     <string name="mf_topbar_like_label">Like Icon</string>
     <string name="mf_topbar_delete_label">Delete Icon</string>
-    <string name="mf_topbar_search_hint_label">Search for characters…</string>
+    <string name="mf_topbar_search_hint_label">Squanch for characters…</string>
     <string name="mf_topbar_icon_loading_label">Loading avatar icon…</string>
 
     <!--  MFHomeScreen  -->
