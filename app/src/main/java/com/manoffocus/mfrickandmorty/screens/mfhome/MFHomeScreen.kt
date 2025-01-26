@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -97,6 +98,9 @@ fun MFHomeScreen(
                 icon = R.drawable.mf_jerry_icon,
                 dialogSize = MFCharacterMsgSize.SMALL,
                 textPosition = MFCharacterTextPosition.LEFT,
+                backgroundColor = Color.White,
+                messageIcon = R.drawable.mf_dialog_icon_white,
+                textColor = Color.Black,
                 msg = msg
             ){
                 navController.navigate(MFScreens.MFQuizScreen.name)

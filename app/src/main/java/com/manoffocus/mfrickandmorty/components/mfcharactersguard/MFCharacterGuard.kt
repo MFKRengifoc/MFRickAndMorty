@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -53,7 +54,10 @@ fun MFCharacterGuard(
     textPosition: MFCharacterTextPosition = MFCharacterTextPosition.RIGHT,
     dialogSize: MFCharacterMsgSize = MFCharacterMsgSize.SMALL,
     icon: Int = R.drawable.mf_rick_icon,
+    messageIcon: Int = R.drawable.mf_dialog_icon_outlined,
+    textColor: Color = Color.White,
     contentDescription: String = "",
+    backgroundColor: Color = MaterialTheme.colors.onPrimary.copy(alpha = 0.1F),
     onClick: () -> Unit = {}
 ) {
     val direction = getDirection(textPosition)
@@ -80,7 +84,7 @@ fun MFCharacterGuard(
                     contentDescription = contentDescription,
                     elevation = 10.dp,
                     size = MFIconSize.LARGE,
-                    backgroundColor = MaterialTheme.colors.onPrimary.copy(alpha = 0.1F)
+                    backgroundColor = backgroundColor
                 ){
                     onClick.invoke()
                 }
@@ -96,7 +100,7 @@ fun MFCharacterGuard(
                 ) {
                     Box(
                         modifier = modifier,
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Image(
                             modifier = Modifier
@@ -106,12 +110,13 @@ fun MFCharacterGuard(
                                     scaleX = if (textPosition == MFCharacterTextPosition.LEFT) -1F else 1F,
                                     scaleY = 1F
                                 ),
-                            painter = painterResource(id = R.drawable.mf_dialog_icon),
-                            contentDescription = contentDescription,
+                            painter = painterResource(id = messageIcon),
+                            contentDescription = contentDescription
                         )
                         MFText(
                             text = msg.value,
-                            size = MFTexSizes.SMALL
+                            size = MFTexSizes.SMALL,
+                            color = textColor
                         )
                     }
                 }
