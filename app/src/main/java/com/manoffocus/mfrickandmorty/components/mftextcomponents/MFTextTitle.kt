@@ -185,7 +185,8 @@ fun MFComplexHeader(
                     Icon(
                         painter = painterResource(id = R.drawable.mf_right_arrow_icon),
                         contentDescription = "Arrow",
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(16.dp),
+                        tint = Color.White
                     )
                 }
             }
