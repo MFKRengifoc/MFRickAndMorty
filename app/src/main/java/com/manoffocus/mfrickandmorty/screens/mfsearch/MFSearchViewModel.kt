@@ -53,6 +53,7 @@ class MFSearchViewModel(
                             searchItems.value += resList
                         }
                     }
+                    checkNextPageButton()
                 }
             }
         }
